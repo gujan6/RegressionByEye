@@ -22,22 +22,31 @@
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
-
   <!-- Add your site or application content here -->
-  <div class="slidecontainer">
-  <input type="range" min="1" max="80" value="40" class="slider" id="myRange">
-  <p>Slider Value: <span id="sliderValue"></span></p>
+
+  <div class="maincontainer">
+    <img id="img">
+
+    <div class="slidecontainer">
+      <input type="range" min="1" max="12" value="1" class="slider" id="myRange">
+      <p>Slider Value: <span id="sliderValue"></span></p>
+    </div>
   </div>
 
+
+  <!-- Shows the slider value for debug purposes -->
   <script>
+    var defaultImageNumber = 1;
     var slider = document.getElementById("myRange");
     var output = document.getElementById("sliderValue");
     output.innerHTML = slider.value;
-
+    document.getElementById("img").src = "img/" + defaultImageNumber + ".png";
     slider.oninput = function() {
       output.innerHTML = this.value;
+      document.getElementById("img").src = "img/"+ this.value + ".png";
     }
   </script>
+
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
