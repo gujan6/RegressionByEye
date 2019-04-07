@@ -31,10 +31,11 @@ void experimentTwo() {
 
   // slopes --> j
   float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
+  // float[] slopes = {-0.8}; 
 
   // bandwiths --> i
   float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
-
+  // float[] bandwiths = {0.05};
 
   for(float i : bandwiths) { 
 
@@ -157,6 +158,7 @@ void experimentTwo() {
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
         for(int k=-50; k<=50; k++) {
           float slope = Precision.round((k * 0.01) + j, 2);
+          // System.out.println("quad_scatter_m"+slope);   
           drawPoints(tempPoints);
           drawQTrend(slope);
           save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
