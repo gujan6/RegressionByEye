@@ -13,7 +13,6 @@ void setup() {
   size(300, 525);
   pixelDensity(displayDensity());
   experimentTwo();
-  //experimentThree();
   exit();
 }
 
@@ -28,6 +27,8 @@ void experimentTwo() {
   float bestmerror;
 
 
+  // slope: ±{0.1, 0.2, 0.4, 0.8}, --> j
+  // bandwidth: {0.05, 0.1, 0.15, 0.2} --> i
   // for (float i = 0.10; i<=0.1; i=round((i+0.05)*1000)/1000.0) {
   //   for (float j = -1; j<=1; j=round((j+0.1)*1000)/1000.0) {   
 
@@ -128,119 +129,6 @@ void experimentTwo() {
       }
   //   }
   // }
-}
-
-void experimentThree() {
-  dirname = "Outliers/";
-  float[][] points;
-  float[] fit;
-  float[] residuals;
-  float[] bestResiduals;
-  float[][] tempPoints;
-  float merror;
-  float bestmerror;
-
-  char[] locations = {'b', 'm', 'e'};
-  int[] outliers = {0, 5, 10, 15};
-  Table metadata = new Table();
-  metadata.addColumn("id");
-  metadata.addColumn("o");
-  metadata.addColumn("ol");
-  metadata.addColumn("ix");
-  metadata.addColumn("iy");
-  metadata.addColumn("six");
-  metadata.addColumn("siy");
-  metadata.addColumn("actualm");
-  metadata.addColumn("actualb");
-  
-  for (float i = 0.00; i<=0.25; i=round((i+0.05)*1000)/1000.0) {
-    for (float j = -1; j<=1; j=round((j+0.1)*1000)/1000.0) {
-      for (int k = 0; k<locations.length; k++) {
-        for (int l = 0; l<outliers.length; l++) {
-          if (j!=0 && round(j*1000)!=0) {
-            bestmerror = 2;
-            residuals = genResiduals(100, i);
-            bestResiduals = permute(residuals);
-            points = genPoints(100, 1.0, j, true);
-            points = zoom(points);
-            tempPoints = genPoints(100, 1.0, j, true);
-            for (int m = 0; m<100; m++) {
-              tempPoints = deepCopy(points);
-              fit = fit(points);
-              residuals = permute(residuals);
-              tempPoints = addResiduals(tempPoints, fit, residuals);
-              fit = fit(tempPoints);
-              merror = abs(j-fit[0]);
-              if ((merror<bestmerror)||m==0) {
-                bestResiduals = residuals;
-                bestmerror = merror;
-              }
-            }
-            int start = 0;
-            int sign = 1;
-            switch(locations[k]){
-              case 'b':
-              start = 0;
-              sign = j<0 ? -1 : 1;
-              break;
-              
-              case 'm':
-              start = 33 - ceil(outliers[l]/2.0);
-              sign = j<0 ? -1 : 1;
-              break;
-              
-              default:
-              case 'e':
-              start = 100-outliers[l];
-              sign = j<0 ? 1 : -1;
-            }
-            fit = fit(points);
-            tempPoints = addResiduals(points, bestResiduals, j, 'l');
-            tempPoints = addOutliers(tempPoints, start, outliers[l], sign);
-            fit = fit(points);
-            merror = abs(j-fit[0]);
-        
-            System.err.println("S,m: ("+i+","+j+") + outlier position:"+start);
-            System.err.print("    ");
-            System.err.println("error(m): "+merror);
-            drawPoints(tempPoints);
-            save(dirname+"line/scatter/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            drawTrend(j);
-            drawTrend(fit(tempPoints));
-            save(dirname+"line/scattertrend/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            
-            drawPointsLine(tempPoints);
-            save(dirname+"line/line/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            drawTrend(j);
-            save(dirname+"line/linetrend/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            
-            drawPointsArea(tempPoints);
-            save(dirname+"line/area/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            drawTrend(j);
-            save(dirname+"line/areatrend/S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-            
-            
-            if(outliers[l]>0){
-              float[] actual = fit(tempPoints);
-              float[] intercept = intersect(fit, actual);
-              drawTrend(fit(tempPoints));
-              TableRow row = metadata.addRow();
-              row.setString("id","S"+i+"m"+j+"o"+locations[k]+outliers[l]+".png");
-              row.setInt("o",outliers[l]);
-              row.setString("ol",locations[k]+"");
-              row.setFloat("ix",intercept[0]);
-              row.setFloat("iy",intercept[1]);
-              row.setFloat("six",toScreenX(intercept[0]));
-              row.setFloat("siy",toScreenY(intercept[1]));
-              row.setFloat("actualm",actual[0]);
-              row.setFloat("actualb",actual[1]); 
-            } 
-          }
-        }
-      }
-    }
-  }
-  saveTable(metadata,dirname+"metadata.csv");
 }
 
 
