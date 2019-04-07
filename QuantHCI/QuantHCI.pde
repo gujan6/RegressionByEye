@@ -28,13 +28,24 @@ void experimentTwo() {
   float bestmerror;
 
 
+  System.out.println("__ START __");            
+
+
   // slope: ±{0.1, 0.2, 0.4, 0.8}, --> j
   // bandwidth: {0.05, 0.1, 0.15, 0.2} --> i
   // for (float i = 0.10; i<=0.1; i=round((i+0.05)*1000)/1000.0) {
   //   for (float j = -1; j<=1; j=round((j+0.1)*1000)/1000.0) {   
 
-      float i = 0.1;
+      // float i = 0.1;
       float j = 0.8;
+
+      float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
+      float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
+
+
+      for(float i : bandwiths) { 
+
+        System.out.println("Generate data for S"+i+ "m"+j+" ...");
 
 
       if (j!=0 && round(j*1000)!=0) {
@@ -153,12 +164,15 @@ void experimentTwo() {
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
         for(int k=-50; k<=50; k++) {
           float slope = Precision.round((k * 0.01) + j, 2);
-          // System.out.println(slope + " - "+k);            
           drawPoints(tempPoints);
           drawQTrend(slope);
           save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
         }
       }
+
+    }
+
+    System.out.println("__ END __");            
 
 }
 
