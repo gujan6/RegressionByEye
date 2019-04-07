@@ -19,33 +19,33 @@
 </head>
 
 <body>
+  <script src="js/main.js"></script>
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
   <!-- Add your site or application content here -->
+  <div class="topcontainer">
+   <select id="participantSelection">
+      <option value="P1">Participant 1</option>
+      <option value="P2">Participant 2</option>
+      <option value="P3">Participant 3</option>
+      <option value="P4">Participant 4</option>
+    </select>
+    <button type="button" onclick="startExperiment()">Start experiment</button>
+  </div>
 
   <div class="maincontainer">
     <img id="img">
 
     <div class="slidecontainer">
-      <input type="range" min="1" max="12" value="1" class="slider" id="myRange">
+      <input type="range" min="1" max="10" value="1" class="slider" id="myRange">
+      <!-- Slider Value is just for debug purposes, will be removed for the final version -->
       <p>Slider Value: <span id="sliderValue"></span></p>
+      <button type="button" onclick="submitAnswer()">Submit Answer</button>
     </div>
   </div>
 
 
-  <!-- Shows the slider value for debug purposes -->
-  <script>
-    var defaultImageNumber = 1;
-    var slider = document.getElementById("myRange");
-    var output = document.getElementById("sliderValue");
-    output.innerHTML = slider.value;
-    document.getElementById("img").src = "img/" + defaultImageNumber + ".png";
-    slider.oninput = function() {
-      output.innerHTML = this.value;
-      document.getElementById("img").src = "img/"+ this.value + ".png";
-    }
-  </script>
 
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
