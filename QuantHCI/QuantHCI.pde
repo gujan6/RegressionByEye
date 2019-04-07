@@ -102,27 +102,27 @@ void experimentTwo() {
         drawQTrend(j);
         save(dirname+"quad/linetrend/S"+i+"m"+j+".png");
         */
-        
-        /**
-        tempPoints = addResiduals(points, bestResiduals, j, 'l');
-        drawPoints(tempPoints);
-        save(dirname+"line/scatter/S"+i+"m"+j+".png");
-        drawTrend(j);
-        save(dirname+"line/scattertrend/S"+i+"m"+j+".png");
 
+        // Scatter linear
+        tempPoints = addResiduals(points, bestResiduals, j, 'l');
+        for(int k=-50; k<=50; k++) {
+          float slope = Precision.round((k * 0.01) + j, 2);
+          drawPoints(tempPoints);
+          drawTrend(slope);
+          save(dirname+"line/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
+        }
+
+        // Scatter trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        drawPoints(tempPoints);
-        save(dirname+"trig/scatter/S"+i+"m"+j+".png");
-        drawTTrend(j);
-        save(dirname+"trig/scattertrend/S"+i+"m"+j+".png");
-        */
-        
+        for(int k=-50; k<=50; k++) {
+          float slope = Precision.round((k * 0.01) + j, 2);
+          drawPoints(tempPoints);
+          drawTTrend(slope);
+          save(dirname+"trig/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
+        }
+
+        // Scatter quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        // drawPoints(tempPoints);
-        // save(dirname+"quad/scatter/S"+i+"m"+j+".png");
-        // drawQTrend(j);
-        // save(dirname+"quad/scattertrend/S"+i+"m"+j+".png");
-        
         for(int k=-50; k<=50; k++) {
           float slope = Precision.round((k * 0.01) + j, 2);
           // System.out.println(slope + " - "+k);            
@@ -131,8 +131,7 @@ void experimentTwo() {
           save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
         }
       }
-  //   }
-  // }
+
 }
 
 
