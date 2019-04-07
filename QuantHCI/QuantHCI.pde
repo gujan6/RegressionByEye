@@ -118,21 +118,17 @@ void experimentTwo() {
         */
         
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        drawPoints(tempPoints);
-        save(dirname+"quad/scatter/S"+i+"m"+j+".png");
-        drawQTrend(j);
-        save(dirname+"quad/scattertrend/S"+i+"m"+j+".png");
-        
+        // drawPoints(tempPoints);
+        // save(dirname+"quad/scatter/S"+i+"m"+j+".png");
+        // drawQTrend(j);
+        // save(dirname+"quad/scattertrend/S"+i+"m"+j+".png");
         
         for(int k=-50; k<=50; k++) {
-        
           float slope = Precision.round((k * 0.01) + j, 2);
-            System.out.println(slope + " - "+k);
-            
+          // System.out.println(slope + " - "+k);            
           drawPoints(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/scattertrend/S"+i+"m"+j+"_test_" + slope + ".png");
- 
+          save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
         }
       }
   //   }
