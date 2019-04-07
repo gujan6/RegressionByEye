@@ -27,26 +27,20 @@ void experimentTwo() {
   float merror;
   float bestmerror;
 
-
   System.out.println("__ START __");            
 
+  // slopes --> j
+  float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
 
-  // slope: ±{0.1, 0.2, 0.4, 0.8}, --> j
-  // bandwidth: {0.05, 0.1, 0.15, 0.2} --> i
-  // for (float i = 0.10; i<=0.1; i=round((i+0.05)*1000)/1000.0) {
-  //   for (float j = -1; j<=1; j=round((j+0.1)*1000)/1000.0) {   
-
-      // float i = 0.1;
-      float j = 0.8;
-
-      float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
-      float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
+  // bandwiths --> i
+  float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
 
 
-      for(float i : bandwiths) { 
+  for(float i : bandwiths) { 
 
-        System.out.println("Generate data for S"+i+ "m"+j+" ...");
+    for(float j : slopes) {
 
+      System.out.println("Generate data for S"+i+ "m"+j+" ...");
 
       if (j!=0 && round(j*1000)!=0) {
         bestmerror = 2;
@@ -68,13 +62,12 @@ void experimentTwo() {
           }
         }
 
-
         fit = fit(points);
 
         //
         //
         // Area PLOTS
-        System.out.println(" > gen. area plots ...");
+        //System.out.println(" > gen. area plots ...");
 
         // Area linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
@@ -108,7 +101,7 @@ void experimentTwo() {
         //
         //
         // Line PLOTS
-        System.out.println(" > gen. line plots ...");
+        //System.out.println(" > gen. line plots ...");
 
         // Line linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
@@ -140,7 +133,7 @@ void experimentTwo() {
         //
         //
         // SCATTER PLOTS
-        System.out.println(" > gen. scatter plots ...");
+        //System.out.println(" > gen. scatter plots ...");
 
         // Scatter linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
@@ -168,12 +161,13 @@ void experimentTwo() {
           drawQTrend(slope);
           save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
         }
+
       }
 
     }
+  }
 
-    System.out.println("__ END __");            
-
+  System.out.println("__ END __");            
 }
 
 
