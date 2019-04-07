@@ -59,43 +59,40 @@ void experimentTwo() {
 
 
         fit = fit(points);
+
+        //
+        //
+        // Area PLOTS
+        System.out.println(" > gen. area plots ...");
+
+        // Area linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
         fit = fit(points);
         merror = abs(j-fit[0]);
-        
-        /**
-        System.err.println("S,m: ("+i+","+j+")");
-        System.err.print("    ");
-        System.err.println("error(m): "+merror);
-        drawPointsArea(tempPoints);
-        save(dirname+"line/area/S"+i+"m"+j+".png");
-        drawTrend(j);
-        save(dirname+"line/areatrend/S"+i+"m"+j+".png");
+        for(int k=-50; k<=50; k++) {
+          float slope = Precision.round((k * 0.01) + j, 2);
+          drawPointsArea(tempPoints);
+          drawTrend(slope);
+          save(dirname+"line/area/S"+i+"m"+j+"_ex_" + slope + ".png");
+        }
 
+        // Area trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        drawPointsArea(tempPoints);
-        save(dirname+"trig/area/S"+i+"m"+j+".png");
-        drawTTrend(j);
-        save(dirname+"trig/areatrend/S"+i+"m"+j+".png");
+        for(int k=-50; k<=50; k++) {
+          float slope = Precision.round((k * 0.01) + j, 2);
+          drawPointsArea(tempPoints);
+          drawTTrend(slope);
+          save(dirname+"trig/area/S"+i+"m"+j+"_ex_" + slope + ".png");
+        }
 
-        tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        drawPointsArea(tempPoints);
-        save(dirname+"quad/area/S"+i+"m"+j+".png");
-        drawQTrend(j);
-        save(dirname+"quad/areatrend/S"+i+"m"+j+".png");
-
-
-  
-        */
         // Area quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
         for(int k=-50; k<=50; k++) {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/line/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"quad/area/S"+i+"m"+j+"_ex_" + slope + ".png");
         }
-
 
         //
         //
