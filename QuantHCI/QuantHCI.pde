@@ -1,5 +1,6 @@
 import org.apache.commons.math3.fitting.*;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.util.Precision;
 import java.util.Comparator;
 import java.util.Arrays;
 
@@ -121,10 +122,17 @@ void experimentTwo() {
         save(dirname+"quad/scatter/S"+i+"m"+j+".png");
         drawQTrend(j);
         save(dirname+"quad/scattertrend/S"+i+"m"+j+".png");
-        for(float k = -0.5; k < 0.6; k += 0.1){
+        
+        
+        for(int k=-50; k<=50; k++) {
+        
+          float slope = Precision.round((k * 0.01) + j, 2);
+            System.out.println(slope + " - "+k);
+            
           drawPoints(tempPoints);
-          drawQTrend(j+k);
-          save(dirname+"quad/scattertrend/S"+i+"m"+(j)+"WRONG" + (j-k) + ".png");
+          drawQTrend(slope);
+          save(dirname+"quad/scattertrend/S"+i+"m"+j+"_test_" + slope + ".png");
+ 
         }
       }
   //   }
