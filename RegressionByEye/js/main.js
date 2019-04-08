@@ -4,10 +4,11 @@
 var globalSequence = 0;
 var maxSequenceLength = 5; //How many charts are shown to the participant (NEEDS TO BE EQUAL OR SMALLER THAN folderArray)
 var numberArray = Array(50).fill(0);
-var folderArray = Array(50).fill("folder");  //declare an array which will be filled with the folders of the images;
+var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array which will be filled with the folders of the images;
 var trendType = ["line", "trig", "quad"];
 var chartType = ["area", "line", "scatter"];
-var slopeAndBandwithType = ["s0.05m1.0"];
+var slopeAndBandwidthType = ["s0.05m1.0"];
+var data = Array(maxSequenceLength).fill("");
 
 
 //This function returns an array with a sequence of ten numbers
@@ -36,30 +37,40 @@ function changeImage(folder){
 }
 
 function submitAnswer(){
+  var slider = document.getElementById("myRange");
+  let selectedImageNr = numberArray[slider.value - 1];
+  console.log(selectedImageNr); //Prints the image number (out of the total 100 images
+  var error = calculateError(selectedImageNr);
   //Writes answer to an array, which can then be converted to csv, and triggers the next image
   if(globalSequence + 1 === maxSequenceLength){
+    data[globalSequence][3] = error;
     //Create CSV
+    download_csv(data);
   }
   else {
-    var slider = document.getElementById("myRange");
-    let selectedImageNr = numberArray[slider.value - 1];
-    console.log(selectedImageNr); //Prints the image number (out of the total 100 images
-    var error = calculateError(selectedImageNr);
-
+    data[globalSequence][3] = error;
     globalSequence++; //increments the global sequence by 1, so that the next question is displayed.
     changeImage(folderArray[globalSequence]);
   }
 }
 
+function download_csv(data) {
+  var csv = 'Trend, Chart, Slope\n';
+  data.forEach(function(row) {
+    csv += row.join(',');
+    csv += "\n";
+  });
+
+  console.log(csv);
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = getParticipant() + '.csv';
+  hiddenElement.click();
+}
+
 function calculateError(imageNumber){
-  var error = 0;
-  if(imageNumber < 50){
-    error = 50 - imageNumber;
-  }
-  else if (imageNumber > 50){
-    error =  imageNumber - 50;
-  }
-  return error;
+  return error = (imageNumber - 50) * 0.01;
 }
 
 //Returns the selected participant from the dropdown
@@ -81,23 +92,29 @@ function getParticipant(){
 function getExperimentSequence(){
   //Code for the sequence
   //Should pick make a list of filepaths which contain the images
-  for(let i = 0; i < 50; i++){
+  for(let i = 0; i < maxSequenceLength; i++){
     var filepath = "img/";
     var randomNumber1 = Math.floor(Math.random()*trendType.length);
     let trend = trendType[randomNumber1];
     var randomNumber2 = Math.floor(Math.random()*chartType.length);
     let chart = chartType[randomNumber2];
-    var randomNumber3 = Math.floor(Math.random()*slopeAndBandwithType.length);
-    let slopeAndBandwith = trendType[randomNumber3];
+    var randomNumber3 = Math.floor(Math.random()*slopeAndBandwidthType.length);
+    let slopeAndBandwidth = slopeAndBandwidthType[randomNumber3];
 
-    filepath = filepath + trend + "/" + chart + "/" + slopeAndBandwith + "/";
+    filepath = filepath + trend + "/" + chart + "/" + slopeAndBandwidth + "/";
     folderArray[i] = filepath;
+
+    data[i][0] = trend;
+    data[i][1] = chart;
+    data[i][2] = slopeAndBandwidth;
   }
   return folderArray;
 }
 
 function startExperiment(){
-  var participantNumber = getParticipant();
+  for(let i = 0; i < maxSequenceLength; i++){
+    data[i] = Array(4).fill(""); //Initializes the empty answer arrays
+  }
   getExperimentSequence();
   changeImage(folderArray[globalSequence]);
 }
