@@ -1,0 +1,59 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Regression By Eye Experiment</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--<link rel="manifest" href="site.webmanifest">-->
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <script src="js/main.js"></script>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+  <!-- Add your site or application content here -->
+  <div class="topcontainer">
+   <select id="participantSelection">
+      <option value="P1">Participant 1</option>
+      <option value="P2">Participant 2</option>
+      <option value="P3">Participant 3</option>
+      <option value="P4">Participant 4</option>
+    </select>
+    <button type="button" onclick="startExperiment(0)">Start experiment</button>
+  </div>
+
+  <div class="maincontainer">
+    <img id="img">
+
+    <div class="slidecontainer">
+      <input type="range" min="1" max="50" value="1" class="slider" id="myRange">
+      <!-- Slider Value is just for debug purposes, will be removed for the final version -->
+      <!--<p>Slider Value: <span id="sliderValue"></span></p>-->
+      <button type="button" id="submitButton" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+  </div>
+
+
+
+  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+
+</body>
+
+</html>
