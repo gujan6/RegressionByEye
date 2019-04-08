@@ -68,15 +68,41 @@ function handleDialog(event) {
     var data = $.csv.toArrays(csv);
     console.log(data);
 
-    console.log("ParticipantID:", data[1][1]);
-    console.log("TrialID:", data[1][2]);
-    console.log("BlockSequence:", data[1][3]);
-    console.log("C-Charttype:", data[1][4]);
-    console.log("M-Slope:", mapSlopeDescription(data[1][5]));
-    console.log("S-Bandwith:", mapBandwithDescription(data[1][6]));
-    console.log("F-Function:", data[1][7]);
+    handleRecord(data[1]);
 
   }
+}
+
+function handleRecord(record){
+  // console.log("Experiment:", record[0])
+  // console.log("ParticipantID:", record[1]);
+  // console.log("TrialID:", record[2]);
+  // console.log("BlockSequence:", record[3]);
+  // console.log("C-Charttype:", record[4]);
+  // console.log("M-Slope:", mapSlopeDescription(record[5]));
+  // console.log("S-Bandwith:", mapBandwithDescription(record[6]));
+  // console.log("F-Function:", record[7]);
+
+  var participantId = record[1];
+  var trailId = record[2];
+  var blockSequence = record[3];
+  var chart = record[4];
+  var slope = mapSlopeDescription(record[5]);
+  var bandwith = mapBandwithDescription(record[6]);
+  var func = record[7];
+
+  var obj = {
+    "participantId": participantId,
+    "trailId": trailId,
+    "blockSeq": blockSequence,
+    "graphtype": chart,
+    "sigma": bandwith,
+    "m": slope,
+    "type": func,
+    "imgs": func+"/"+chart+"/s"+bandwith+"m"+slope
+  }
+
+  console.log(obj);
 }
 
 $(document).ready(function () {
