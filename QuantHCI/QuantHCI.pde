@@ -3,6 +3,7 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.util.Precision;
 import java.util.Comparator;
 import java.util.Arrays;
+import java.util.List;
 
 //mark size
 float mr = 5;
@@ -13,11 +14,11 @@ String dirname;
 void setup() {
   size(300, 525);
   pixelDensity(displayDensity());
-  experimentTwo();
+  generateExperimentData();
   exit();
 }
 
-void experimentTwo() {
+void generateExperimentData() {
   dirname = "Area/";
   float[][] points;
   float[] fit;
@@ -26,6 +27,8 @@ void experimentTwo() {
   float[][] tempPoints;
   float merror;
   float bestmerror;
+
+  List<String> combinations = new ArrayList<String>();
 
   System.out.println("__ START __");            
 
@@ -40,6 +43,8 @@ void experimentTwo() {
   for(float i : bandwiths) { 
 
     for(float j : slopes) {
+
+      combinations.add("s"+i+"m"+j);
 
       System.out.println("Generate data for S"+i+ "m"+j+" ...");
 
@@ -174,6 +179,15 @@ void experimentTwo() {
   }
 
   System.out.println("__ END __");            
+
+  StringBuffer sb = new StringBuffer();
+  for(String c : combinations){
+    sb.append("\""+c+"\", ");
+  }
+  
+  System.out.println();
+  System.out.println("Generated combinations:");
+  System.out.println(sb.toString());
 }
 
 
