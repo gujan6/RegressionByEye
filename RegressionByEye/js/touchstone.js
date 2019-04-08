@@ -23,13 +23,47 @@ function isFileAPIAvailable() {
   }
 }
 
+function mapSlopeDescription(desc) {
+  var kvArray = [
+    ['n_0_8', -0.8], 
+    ['n_0_4', -0.4],
+    ['n_0_2', -0.2],
+    ['n_0_1', -0.1],
+    ['p_0_1', 0.1],
+    ['p_0_2', 0.2],
+    ['p_0_4', 0.4],
+    ['p_0_8', 0.8],
+  ];
+
+  var myMap = new Map(kvArray);
+
+  console.log("map",desc, myMap.get(desc));
+  return myMap.get(desc);
+
+}
+
+function mapBandwithDescription(desc) {
+  var kvArray = [
+    ['b_0_05', 0.05], 
+    ['b_0_1', 0.1],
+    ['b_0_15', 0.15],
+    ['b_0_2', 0.2]
+  ];
+
+  var myMap = new Map(kvArray);
+
+  console.log("map",desc, myMap.get(desc));
+  return myMap.get(desc);
+
+}
+
 function handleDialog(event) {
   var files = event.target.files;
   var file = files[0];
 
   var reader = new FileReader();
   reader.readAsText(file);
-  reader.onload = function(event){
+  reader.onload = function (event) {
     var csv = event.target.result;
     var data = $.csv.toArrays(csv);
     console.log(data);
@@ -38,15 +72,15 @@ function handleDialog(event) {
     console.log("TrialID:", data[1][2]);
     console.log("BlockSequence:", data[1][3]);
     console.log("C-Charttype:", data[1][4]);
-    console.log("M-Slope:", data[1][5]);
-    console.log("S-Bandwith:", data[1][6]);
+    console.log("M-Slope:", mapSlopeDescription(data[1][5]));
+    console.log("S-Bandwith:", mapBandwithDescription(data[1][6]));
     console.log("F-Function:", data[1][7]);
 
   }
 }
 
-$(document).ready(function() {
-  if(isFileAPIAvailable()) {
+$(document).ready(function () {
+  if (isFileAPIAvailable()) {
     $('#files').bind('change', handleDialog);
   }
 });
