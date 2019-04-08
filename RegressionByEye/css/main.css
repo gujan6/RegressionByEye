@@ -102,14 +102,24 @@ textarea {
    Author's custom styles
    ========================================================================== */
 #img {
-  width: 350px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45%;
+}
+
+.topcontainer {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .maincontainer {
-
+  margin: auto;
+  width: 50%;
 }
 
 .slidecontainer {
+  margin: auto;
   width: 50%;
   padding-top: 10px;
 }
