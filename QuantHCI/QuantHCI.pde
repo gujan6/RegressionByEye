@@ -30,12 +30,12 @@ void experimentTwo() {
   System.out.println("__ START __");            
 
   // slopes --> j
-  float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
-  // float[] slopes = {-0.8}; 
+  //float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
+   float[] slopes = {-0.8}; 
 
   // bandwiths --> i
-  float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
-  // float[] bandwiths = {0.05};
+  //float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
+   float[] bandwiths = {0.05};
 
   for(float i : bandwiths) { 
 
@@ -78,7 +78,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/area/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"line/area/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Area trigonometric
@@ -87,7 +87,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/area/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"trig/area/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Area quadratic
@@ -96,7 +96,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/area/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"quad/area/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         //
@@ -110,7 +110,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/line/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"line/line/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Line trigonometric
@@ -119,7 +119,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/line/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"trig/line/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Line quadratic
@@ -128,7 +128,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/line/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"quad/line/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         //
@@ -142,7 +142,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"line/scatter/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Scatter trigonometric
@@ -151,7 +151,7 @@ void experimentTwo() {
           float slope = Precision.round((k * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"trig/scatter/s"+i+"m"+j+"/" + slope + ".png");
         }
 
         // Scatter quadratic
@@ -161,7 +161,7 @@ void experimentTwo() {
           // System.out.println("quad_scatter_m"+slope);   
           drawPoints(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/scatter/S"+i+"m"+j+"_ex_" + slope + ".png");
+          save(dirname+"quad/scatter/s"+i+"m"+j+"/" + slope + ".png");
         }
 
       }
