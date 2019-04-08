@@ -27,6 +27,8 @@ void experimentTwo() {
   float merror;
   float bestmerror;
 
+  int base = -50;
+
   System.out.println("__ START __");            
 
   // slopes --> j
@@ -74,17 +76,17 @@ void experimentTwo() {
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
         fit = fit(points);
         merror = abs(j-fit[0]);
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/area/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"line/area/s"+i+"m"+j+"/" + k +"_"+ slope + ".png");
         }
 
         // Area trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTTrend(slope);
           save(dirname+"trig/area/s"+i+"m"+j+"/" + slope + ".png");
@@ -92,8 +94,8 @@ void experimentTwo() {
 
         // Area quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawQTrend(slope);
           save(dirname+"quad/area/s"+i+"m"+j+"/" + slope + ".png");
@@ -106,8 +108,8 @@ void experimentTwo() {
 
         // Line linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTrend(slope);
           save(dirname+"line/line/s"+i+"m"+j+"/" + slope + ".png");
@@ -115,8 +117,8 @@ void experimentTwo() {
 
         // Line trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTTrend(slope);
           save(dirname+"trig/line/s"+i+"m"+j+"/" + slope + ".png");
@@ -124,8 +126,8 @@ void experimentTwo() {
 
         // Line quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawQTrend(slope);
           save(dirname+"quad/line/s"+i+"m"+j+"/" + slope + ".png");
@@ -138,8 +140,8 @@ void experimentTwo() {
 
         // Scatter linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTrend(slope);
           save(dirname+"line/scatter/s"+i+"m"+j+"/" + slope + ".png");
@@ -147,8 +149,8 @@ void experimentTwo() {
 
         // Scatter trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTTrend(slope);
           save(dirname+"trig/scatter/s"+i+"m"+j+"/" + slope + ".png");
@@ -156,8 +158,8 @@ void experimentTwo() {
 
         // Scatter quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=-50; k<=50; k++) {
-          float slope = Precision.round((k * 0.01) + j, 2);
+        for(int k=0; k<100; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
           // System.out.println("quad_scatter_m"+slope);   
           drawPoints(tempPoints);
           drawQTrend(slope);
