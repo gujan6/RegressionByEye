@@ -3,22 +3,23 @@
 //Global variables
 var globalSequence = 0;
 var maxSequenceLength = 10;
+var numberArray = Array(50).fill(0);
 
 //This function returns an array with a sequence of ten numbers
 function getTenImages(){
-  var imageNrArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  let start = Math.floor(Math.random() * 10) + 1;
-  for(let i = 0; i < 10; i++){
+  var imageNrArray = Array(100).fill(0);
+  let start = Math.floor(Math.random() * 50) + 1;
+  for(let i = 0; i < 50; i++){
     imageNrArray[i] = start;
     start++;
   }
-  console.log(imageNrArray);
+  //console.log(imageNrArray);
   return imageNrArray
 }
 
 //Shows images in the passed folder and changes the image based on the slider position
 function changeImage(folder){
-  let numberArray = getTenImages();
+  numberArray = getTenImages();
   var defaultImageNumber = numberArray[0];
   var slider = document.getElementById("myRange");
   var output = document.getElementById("sliderValue");
@@ -37,6 +38,11 @@ function submitAnswer(){
     //Create CSV
   }
   else {
+    var slider = document.getElementById("myRange");
+    let selectedImageNr = numberArray[slider.value - 1];
+    console.log(selectedImageNr); //Prints the image number (out of the total 100 images
+    
+
     globalSequence++; //increments the global sequence by 1, so that the next question is displayed.
     changeImage(globalSequence);
   }
