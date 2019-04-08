@@ -7,7 +7,7 @@ var numberArray = Array(50).fill(0);
 var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array which will be filled with the folders of the images;
 var trendType = ["line", "trig", "quad"];
 var chartType = ["area", "line", "scatter"];
-var slopeAndBandwidthType = ["s0.05m1.0"];
+var slopeAndBandwidthType = ["s0.05m-0.1", "s0.05m-0.2", "s0.05m-0.4", "s0.05m-0.8", "s0.05m0.1", "s0.05m0.2", "s0.05m0.4", "s0.05m0.8", "s0.1m-0.1", "s0.1m-0.2", "s0.1m-0.4", "s0.1m-0.8", "s0.1m0.1", "s0.1m0.2", "s0.1m0.4", "s0.1m0.8", "s0.15m-0.1", "s0.15m-0.2", "s0.15m-0.4", "s0.15m-0.8", "s0.15m0.1", "s0.15m0.2", "s0.15m0.4", "s0.15m0.8", "s0.2m-0.1", "s0.2m-0.2", "s0.2m-0.4", "s0.2m-0.8", "s0.2m0.1", "s0.2m0.2", "s0.2m0.4", "s0.2m0.8"];
 var data = Array(maxSequenceLength).fill("");
 
 
@@ -28,7 +28,6 @@ function changeImage(folder){
   numberArray = getTenImages();
   var slider = document.getElementById("myRange");
   var defaultImageNumber = numberArray[slider.value - 1];
-  var output = document.getElementById("sliderValue");
   //Get first image, based on the first number in the array
   document.getElementById("img").src = folder + defaultImageNumber + ".png";
   slider.oninput = function() {
@@ -55,7 +54,7 @@ function submitAnswer(){
 }
 
 function download_csv(data) {
-  var csv = 'Trend, Chart, Slope\n';
+  var csv = 'Trend, Chart, Slope, Error(signed)\n';
   data.forEach(function(row) {
     csv += row.join(',');
     csv += "\n";
