@@ -80,7 +80,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/area/s"+i+"m"+j+"/" + k +"_"+ slope + ".png");
+          save(dirname+"line/area/s"+i+"m"+j+"/" + k +".png");
         }
 
         // Area trigonometric
@@ -89,7 +89,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/area/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"trig/area/s"+i+"m"+j+"/" + k + ".png");
         }
 
         // Area quadratic
@@ -98,7 +98,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/area/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"quad/area/s"+i+"m"+j+"/" + k + ".png");
         }
 
         //
@@ -112,7 +112,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/line/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"line/line/s"+i+"m"+j+"/" + k + ".png");
         }
 
         // Line trigonometric
@@ -121,7 +121,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/line/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"trig/line/s"+i+"m"+j+"/" + k + ".png");
         }
 
         // Line quadratic
@@ -130,7 +130,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/line/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"quad/line/s"+i+"m"+j+"/" + k + ".png");
         }
 
         //
@@ -144,7 +144,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTrend(slope);
-          save(dirname+"line/scatter/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"line/scatter/s"+i+"m"+j+"/" + k + ".png");
         }
 
         // Scatter trigonometric
@@ -153,7 +153,7 @@ void experimentTwo() {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTTrend(slope);
-          save(dirname+"trig/scatter/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"trig/scatter/s"+i+"m"+j+"/" + k + ".png");
         }
 
         // Scatter quadratic
@@ -163,7 +163,7 @@ void experimentTwo() {
           // System.out.println("quad_scatter_m"+slope);   
           drawPoints(tempPoints);
           drawQTrend(slope);
-          save(dirname+"quad/scatter/s"+i+"m"+j+"/" + slope + ".png");
+          save(dirname+"quad/scatter/s"+i+"m"+j+"/" + k + ".png");
         }
 
       }
