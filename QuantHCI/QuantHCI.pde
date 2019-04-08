@@ -32,12 +32,12 @@ void experimentTwo() {
   System.out.println("__ START __");            
 
   // slopes --> j
-  //float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
-   float[] slopes = {-0.8}; 
+  float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
+  // float[] slopes = {-0.8}; 
 
   // bandwiths --> i
-  //float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
-   float[] bandwiths = {0.05};
+  float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
+  // float[] bandwiths = {0.05};
 
   for(float i : bandwiths) { 
 
@@ -175,7 +175,7 @@ void experimentTwo() {
 }
 
 
-float adjustY(float x, float y, float lambda) {
+float adjustY(float x, float y, float lambda) {draw 
   return (lambda * x + (1-lambda) * y) / sqrt(sq(lambda) + sq(1-lambda));
 }
 
