@@ -175,7 +175,7 @@ void experimentTwo() {
 }
 
 
-float adjustY(float x, float y, float lambda) {draw 
+float adjustY(float x, float y, float lambda) { 
   return (lambda * x + (1-lambda) * y) / sqrt(sq(lambda) + sq(1-lambda));
 }
 
