@@ -27,8 +27,6 @@ void experimentTwo() {
   float merror;
   float bestmerror;
 
-  int base = -50;
-
   System.out.println("__ START __");            
 
   // slopes --> j
@@ -67,6 +65,10 @@ void experimentTwo() {
 
         fit = fit(points);
 
+        int base = -50;
+        int startAt = 1;
+        int endAt = 100;
+
         //
         //
         // Area PLOTS
@@ -76,7 +78,7 @@ void experimentTwo() {
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
         fit = fit(points);
         merror = abs(j-fit[0]);
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTrend(slope);
@@ -85,7 +87,7 @@ void experimentTwo() {
 
         // Area trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawTTrend(slope);
@@ -94,7 +96,7 @@ void experimentTwo() {
 
         // Area quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
           drawQTrend(slope);
@@ -108,7 +110,7 @@ void experimentTwo() {
 
         // Line linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTrend(slope);
@@ -117,7 +119,7 @@ void experimentTwo() {
 
         // Line trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawTTrend(slope);
@@ -126,7 +128,7 @@ void experimentTwo() {
 
         // Line quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsLine(tempPoints);
           drawQTrend(slope);
@@ -140,7 +142,7 @@ void experimentTwo() {
 
         // Scatter linear
         tempPoints = addResiduals(points, bestResiduals, j, 'l');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTrend(slope);
@@ -149,7 +151,7 @@ void experimentTwo() {
 
         // Scatter trigonometric
         tempPoints = addResiduals(points, bestResiduals, j, 't');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPoints(tempPoints);
           drawTTrend(slope);
@@ -158,7 +160,7 @@ void experimentTwo() {
 
         // Scatter quadratic
         tempPoints = addResiduals(points, bestResiduals, j, 'q');
-        for(int k=0; k<100; k++) {
+        for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           // System.out.println("quad_scatter_m"+slope);   
           drawPoints(tempPoints);
