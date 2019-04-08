@@ -331,7 +331,7 @@ void drawTTrend(float m) {
   float Y1;
   float X2;
   float Y2;
-  stroke(0);
+  stroke(227, 0, 255);
   strokeWeight(2);
   for (int i = 0; i<resolution-1; i++) {
     X1 = map(i, 0, resolution, 0, PI);
@@ -362,7 +362,7 @@ void drawQTrend(float m) {
 }
 
 void drawTrend(float[] fit) {
-  stroke(0);
+  stroke(227, 0, 255);
   strokeWeight(2);
   line(toScreenX(0), toScreenY(fit[1]), toScreenX(1), toScreenY(fit[0]+fit[1]));
 }
