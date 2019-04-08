@@ -6,7 +6,7 @@ var maxSequenceLength = 10;
 
 //This function returns an array with a sequence of ten numbers
 function getTenImages(){
-  var imageNrArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  var imageNrArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   let start = Math.floor(Math.random() * 10) + 1;
   for(let i = 0; i < 10; i++){
     imageNrArray[i] = start;
@@ -38,7 +38,7 @@ function submitAnswer(){
   }
   else {
     globalSequence++; //increments the global sequence by 1, so that the next question is displayed.
-    startExperiment(globalSequence);
+    changeImage(globalSequence);
   }
 }
 
@@ -71,8 +71,8 @@ function getExperimentSequence(participantNumber){
 
 }
 
-function startExperiment(sequenceStep){
+function startExperiment(){
   var participantNumber = getParticipant();
   var folderArray = getExperimentSequence(participantNumber);
-  changeImage(folderArray[sequenceStep]);
+  changeImage(folderArray[0]);
 }
