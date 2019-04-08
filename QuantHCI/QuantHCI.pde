@@ -33,20 +33,20 @@ void generateExperimentData() {
   System.out.println("__ START __");            
 
   // slopes --> j
-  float[] slopes = {-0,1, -0.2, -0.4, -0.8, 0.1, 0.2, 0.4, 0.8}; 
+  float[] slopes = {-0.1f, -0.2f, -0.4f, -0.8f, 0.1f, 0.2f, 0.4f, 0.8f}; 
   // float[] slopes = {-0.8}; 
 
   // bandwiths --> i
-  float[] bandwiths = {0.05, 0.1, 0.15, 0.2};
+  float[] bandwiths = {0.05f, 0.1f, 0.15f, 0.2f};
   // float[] bandwiths = {0.05};
 
   for(float i : bandwiths) { 
 
-    for(float j : slopes) {
+    for(float j : slopes) { 
 
       combinations.add("s"+i+"m"+j);
 
-      System.out.println("Generate data for S"+i+ "m"+j+" ...");
+      System.out.println("Generate data for S"+i+ "m"+j+" ..."); 
 
       if (j!=0 && round(j*1000)!=0) {
         bestmerror = 2;
