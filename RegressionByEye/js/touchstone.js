@@ -124,7 +124,7 @@ function extractFieldPositions(header) {
 function handleTouchstoneCSVData(data) {
   const fields = extractFieldPositions(data[0]);
 
-  var trialsByParticipants = new Map
+  var trialsByParticipants = new Map();
 
   for (i = 1; i < data.length; i++) {
     var trialDef = extractFieldsFromRecord(fields, data[i]);
@@ -138,6 +138,7 @@ function handleTouchstoneCSVData(data) {
     trialsByParticipants.get(participantId).push(trialDef);
   }
 
+  console.info("Parsed experiment trials by participants:")
   console.info(trialsByParticipants);
 }
 
