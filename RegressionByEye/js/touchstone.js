@@ -47,12 +47,12 @@ function isFileAPIAvailable() {
 }
 
 function mapSlopeDescription(desc) {
-  console.log("map", desc, slopes.get(desc));
+  console.debug("map", desc, slopes.get(desc));
   return slopes.get(desc);
 }
 
 function mapBandwithDescription(desc) {
-  console.log("map", desc, bandwiths.get(desc));
+  console.debug("map", desc, bandwiths.get(desc));
   return bandwiths.get(desc);
 }
 
@@ -65,11 +65,7 @@ function handleDialog(event) {
   reader.onload = function (event) {
     var csv = event.target.result;
     var data = $.csv.toArrays(csv);
-    console.log(data);
-
     handleTouchstoneCSVData(data);
-
-
   }
 }
 
@@ -128,10 +124,21 @@ function extractFieldPositions(header) {
 function handleTouchstoneCSVData(data) {
   const fields = extractFieldPositions(data[0]);
 
-  for(i=1; i< data.length; i++) {
-    extractFieldsFromRecord(fields, data[i]);
+  var trialsByParticipants = new Map
+
+  for (i = 1; i < data.length; i++) {
+    var trialDef = extractFieldsFromRecord(fields, data[i]);
+    var participantId = trialDef.participantId;
+
+    if (!trialsByParticipants.has(participantId)) {
+      console.debug("New participant id", participantId);
+      trialsByParticipants.set(participantId, [])
+    }
+
+    trialsByParticipants.get(participantId).push(trialDef);
   }
 
+  console.info(trialsByParticipants);
 }
 
 function extractFieldsFromRecord(fields, record) {
