@@ -68,14 +68,13 @@ function handleDialog(event) {
     console.log(data);
 
     handleTouchstoneCSVData(data);
-    handleRecord(data[1]);
+
 
   }
 }
 
 
 function extractFieldPositions(header) {
-
   var fields = {
     "participantId": { "label": "ParticipantID" },
     "trialId": { "label": "TrialID" },
@@ -122,34 +121,29 @@ function extractFieldPositions(header) {
     }
   }
   console.debug(fields);
+
+  return fields;
 }
 
 function handleTouchstoneCSVData(data) {
-  extractFieldPositions(data[0]);
+  const fields = extractFieldPositions(data[0]);
+
+  for(i=1; i< data.length; i++) {
+    extractFieldsFromRecord(fields, data[i]);
+  }
+
 }
 
-function handleRecord(record) {
-  // console.log("Experiment:", record[0])
-  // console.log("ParticipantID:", record[1]);
-  // console.log("TrialID:", record[2]);
-  // console.log("BlockSequence:", record[3]);
-  // console.log("C-Charttype:", record[4]);
-  // console.log("M-Slope:", mapSlopeDescription(record[5]));
-  // console.log("S-Bandwith:", mapBandwithDescription(record[6]));
-  // console.log("F-Function:", record[7]);
+function extractFieldsFromRecord(fields, record) {
+  var chart = record[fields.graphtype.pos];
+  var slope = mapSlopeDescription(record[fields.m.pos]);
+  var bandwith = mapBandwithDescription(record[fields.sigma.pos]);
+  var func = record[fields.type.pos];
 
-  var participantId = record[1];
-  var trailId = record[2];
-  var blockSequence = record[3];
-  var chart = record[4];
-  var slope = mapSlopeDescription(record[5]);
-  var bandwith = mapBandwithDescription(record[6]);
-  var func = record[7];
-
-  var obj = {
-    "participantId": participantId,
-    "trailId": trailId,
-    "blockSeq": blockSequence,
+  var trialDefinition = {
+    "participantId": "P" + record[fields.participantId.pos],
+    "trailId": record[fields.trialId.pos],
+    "blockSeq": record[fields.blockSeq.pos],
     "graphtype": chart,
     "sigma": bandwith,
     "m": slope,
@@ -157,7 +151,8 @@ function handleRecord(record) {
     "imgs": func + "/" + chart + "/s" + bandwith + "m" + slope
   }
 
-  console.log(obj);
+  console.debug(trialDefinition);
+  return trialDefinition;
 }
 
 $(document).ready(function () {
