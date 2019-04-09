@@ -1,4 +1,27 @@
-// CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html 
+//
+// Reader for a Touchstone2 experiment csv export file.
+// - CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html 
+//
+
+const kvSlopes = [
+  ['n_0_8', -0.8], 
+  ['n_0_4', -0.4],
+  ['n_0_2', -0.2],
+  ['n_0_1', -0.1],
+  ['p_0_1', 0.1],
+  ['p_0_2', 0.2],
+  ['p_0_4', 0.4],
+  ['p_0_8', 0.8],
+];
+const slopes = new Map(kvSlopes);
+
+const kvBandwiths = [
+  ['b_0_05', 0.05], 
+  ['b_0_1', 0.1],
+  ['b_0_15', 0.15],
+  ['b_0_2', 0.2]
+];
+const bandwiths = new Map(kvBandwiths);
 
 function isFileAPIAvailable() {
   // Check for the various File API support.
@@ -24,37 +47,13 @@ function isFileAPIAvailable() {
 }
 
 function mapSlopeDescription(desc) {
-  var kvArray = [
-    ['n_0_8', -0.8], 
-    ['n_0_4', -0.4],
-    ['n_0_2', -0.2],
-    ['n_0_1', -0.1],
-    ['p_0_1', 0.1],
-    ['p_0_2', 0.2],
-    ['p_0_4', 0.4],
-    ['p_0_8', 0.8],
-  ];
-
-  var myMap = new Map(kvArray);
-
-  console.log("map",desc, myMap.get(desc));
-  return myMap.get(desc);
-
+  console.log("map",desc, slopes.get(desc));
+  return slopes.get(desc);
 }
 
 function mapBandwithDescription(desc) {
-  var kvArray = [
-    ['b_0_05', 0.05], 
-    ['b_0_1', 0.1],
-    ['b_0_15', 0.15],
-    ['b_0_2', 0.2]
-  ];
-
-  var myMap = new Map(kvArray);
-
-  console.log("map",desc, myMap.get(desc));
-  return myMap.get(desc);
-
+  console.log("map",desc, bandwiths.get(desc));
+  return bandwiths.get(desc);
 }
 
 function handleDialog(event) {
