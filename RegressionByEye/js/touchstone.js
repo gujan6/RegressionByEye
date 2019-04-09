@@ -4,7 +4,7 @@
 //
 
 const kvSlopes = [
-  ['n_0_8', -0.8], 
+  ['n_0_8', -0.8],
   ['n_0_4', -0.4],
   ['n_0_2', -0.2],
   ['n_0_1', -0.1],
@@ -16,7 +16,7 @@ const kvSlopes = [
 const slopes = new Map(kvSlopes);
 
 const kvBandwiths = [
-  ['b_0_05', 0.05], 
+  ['b_0_05', 0.05],
   ['b_0_1', 0.1],
   ['b_0_15', 0.15],
   ['b_0_2', 0.2]
@@ -47,12 +47,12 @@ function isFileAPIAvailable() {
 }
 
 function mapSlopeDescription(desc) {
-  console.log("map",desc, slopes.get(desc));
+  console.log("map", desc, slopes.get(desc));
   return slopes.get(desc);
 }
 
 function mapBandwithDescription(desc) {
-  console.log("map",desc, bandwiths.get(desc));
+  console.log("map", desc, bandwiths.get(desc));
   return bandwiths.get(desc);
 }
 
@@ -67,12 +67,68 @@ function handleDialog(event) {
     var data = $.csv.toArrays(csv);
     console.log(data);
 
+    handleTouchstoneCSVData(data);
     handleRecord(data[1]);
 
   }
 }
 
-function handleRecord(record){
+
+function extractFieldPositions(header) {
+
+  var fields = {
+    "participantId": { "label": "ParticipantID" },
+    "trialId": { "label": "TrialID" },
+    "blockSeq": { "label": "Block1" },
+    "graphtype": { "label": "c" },
+    "m": { "label": "m" },
+    "sigma": { "label": "s" },
+    "type": { "label": "f" },
+  };
+
+  for (c = 0; c < header.length; c++) {
+    var column = header[c];
+    switch (column) {
+      case fields.participantId.label:
+        console.debug(fields.participantId.label, "at pos", c);
+        fields.participantId.pos = c;
+        break;
+      case fields.trialId.label:
+        console.debug(fields.trialId.label, "at pos", c);
+        fields.trialId.pos = c;
+        break;
+      case fields.blockSeq.label:
+        console.debug(fields.blockSeq.label, "at pos", c);
+        fields.blockSeq.pos = c;
+        break;
+      case fields.graphtype.label:
+        console.debug(fields.graphtype.label, "at pos", c);
+        fields.graphtype.pos = c;
+        break;
+      case fields.m.label:
+        console.debug(fields.m.label, "at pos", c);
+        fields.m.pos = c;
+        break;
+      case fields.sigma.label:
+        console.debug(fields.sigma.label, "at pos", c);
+        fields.sigma.pos = c;
+        break;
+      case fields.type.label:
+        console.debug(fields.type.label, "at pos", c);
+        fields.type.pos = c;
+        break;
+      default:
+        console.debug("Ignore column", column, "at pos", c);
+    }
+  }
+  console.debug(fields);
+}
+
+function handleTouchstoneCSVData(data) {
+  extractFieldPositions(data[0]);
+}
+
+function handleRecord(record) {
   // console.log("Experiment:", record[0])
   // console.log("ParticipantID:", record[1]);
   // console.log("TrialID:", record[2]);
@@ -98,7 +154,7 @@ function handleRecord(record){
     "sigma": bandwith,
     "m": slope,
     "type": func,
-    "imgs": func+"/"+chart+"/s"+bandwith+"m"+slope
+    "imgs": func + "/" + chart + "/s" + bandwith + "m" + slope
   }
 
   console.log(obj);
