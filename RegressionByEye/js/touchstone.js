@@ -150,13 +150,13 @@ function extractFieldsFromRecord(fields, record) {
 
   var trialDefinition = {
     "participantId": "P" + record[fields.participantId.pos],
-    "trailId": record[fields.trialId.pos],
+    "trialId": record[fields.trialId.pos],
     "blockSeq": record[fields.blockSeq.pos],
     "graphtype": chart,
     "sigma": bandwith,
     "m": slope,
     "type": func,
-    "imgs": func + "/" + chart + "/s" + bandwith + "m" + slope
+    "imgs": "img/" + func + "/" + chart + "/s" + bandwith + "m" + slope + "/"
   }
 
   console.debug(trialDefinition);

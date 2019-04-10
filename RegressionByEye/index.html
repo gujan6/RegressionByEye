@@ -19,12 +19,20 @@
 </head>
 
 <body>
-  <script src="js/main.js"></script>
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
   <!-- Add your site or application content here -->
   <div class="topcontainer">
+    <section id="content">
+      <h2>Process Touchstone2 Experiment Definition</h2>
+      <p>Load a Touchstone2 Experiment CSV definition file.</p>
+      <p><a href="https://develop.touchstone2.org/">https://develop.touchstone2.org/</a></p>
+      <h2>Input</h2>
+      <input type="file" id="files" name="files[]" multiple />
+      <hr>
+    </section>
+
    <select id="participantSelection">
       <option value="P1">Participant 1</option>
       <option value="P2">Participant 2</option>
@@ -38,7 +46,7 @@
     <img id="img">
 
     <div class="slidecontainer">
-      <input type="range" min="1" max="50" value="1" class="slider" id="myRange">
+      <input type="range" min="1" max="60" value="1" class="slider" id="myRange">
       <!-- Slider Value is just for debug purposes, will be removed for the final version -->
       <!--<p>Slider Value: <span id="sliderValue"></span></p>-->
       <button type="button" id="submitButton" onclick="submitAnswer()">Submit Answer</button>
@@ -51,6 +59,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
+  <script src="js/vendor/jquery-csv.min.js"></script>
   <script src="js/main.js"></script>
 
 
