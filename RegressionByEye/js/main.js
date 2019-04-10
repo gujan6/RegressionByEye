@@ -8,7 +8,6 @@ var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array w
 var data= Array(maxSequenceLength).fill("");
 var experiment;
 
-
 //This function returns an array with a sequence of ten numbers
 function getImages(){
   var imageNrArray = Array(100).fill(0);
@@ -45,6 +44,10 @@ function submitAnswer(){
     data[globalSequence][7] = globalSequence; //index
     //Create CSV
     download_csv(data);
+    //Hide the submit button, when the user is done
+    document.getElementById('submitButton').style.visibility = 'hidden';
+    document.getElementById('myRange').style.visibility = 'hidden';
+    document.getElementById("img").src = "img/finish.png";
   }
   else {
     data[globalSequence][5] = error;
@@ -84,7 +87,6 @@ function getExperimentSequence(participant){
   //Code for the sequence
 
   let participantArray = experiment.get(participant);
-
   //Should pick make a list of filepaths which contain the images
   for(let i = 0; i < maxSequenceLength; i++){
     let trend = participantArray[i].type;
@@ -110,10 +112,8 @@ function startExperiment(){
   changeImage(folderArray[globalSequence]);
 }
 
-//
 // Reader for a Touchstone2 experiment csv export file.
 // - CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html
-//
 
 const kvSlopes = [
   ['n_0_8', -0.8],
