@@ -5,15 +5,12 @@ var globalSequence = 0;
 var maxSequenceLength = 5; //How many charts are shown to the participant (NEEDS TO BE EQUAL OR SMALLER THAN folderArray)
 var numberArray = Array(60).fill(0);
 var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array which will be filled with the folders of the images;
-var trendType = ["line", "trig", "quad"];
-var chartType = ["area", "line", "scatter"];
-var slopeAndBandwidthType = ["s0.05m-0.1", "s0.05m-0.2", "s0.05m-0.4", "s0.05m-0.8", "s0.05m0.1", "s0.05m0.2", "s0.05m0.4", "s0.05m0.8", "s0.1m-0.1", "s0.1m-0.2", "s0.1m-0.4", "s0.1m-0.8", "s0.1m0.1", "s0.1m0.2", "s0.1m0.4", "s0.1m0.8", "s0.15m-0.1", "s0.15m-0.2", "s0.15m-0.4", "s0.15m-0.8", "s0.15m0.1", "s0.15m0.2", "s0.15m0.4", "s0.15m0.8", "s0.2m-0.1", "s0.2m-0.2", "s0.2m-0.4", "s0.2m-0.8", "s0.2m0.1", "s0.2m0.2", "s0.2m0.4", "s0.2m0.8"];
 var data= Array(maxSequenceLength).fill("");
 var experiment;
 
 
 //This function returns an array with a sequence of ten numbers
-function getTenImages(){
+function getImages(){
   var imageNrArray = Array(100).fill(0);
   let start = Math.floor(Math.random() * 40) + 1;
   for(let i = 0; i < 60; i++){
@@ -26,7 +23,7 @@ function getTenImages(){
 
 //Shows images in the passed folder and changes the image based on the slider position
 function changeImage(folder){
-  numberArray = getTenImages();
+  numberArray = getImages();
   var slider = document.getElementById("myRange");
   var defaultImageNumber = numberArray[slider.value - 1];
   //Get first image, based on the first number in the array
@@ -80,17 +77,7 @@ function calculateError(imageNumber){
 //Returns the selected participant from the dropdown
 function getParticipant(){
   var e = document.getElementById("participantSelection");
-  var participantNumberString = e.options[e.selectedIndex].value;
-  switch (participantNumberString) {
-    case "P1":
-      return "P1";
-    case "P2":
-      return "P2";
-    case "P3":
-      return "P3";
-    case "P4":
-      return "P4";
-  }
+  return e.options[e.selectedIndex].value;
 }
 
 function getExperimentSequence(participant){
