@@ -42,19 +42,23 @@ function submitAnswer(){
   var error = calculateError(selectedImageNr);
   //Writes answer to an array, which can then be converted to csv, and triggers the next image
   if(globalSequence + 1 === maxSequenceLength){
-    data[globalSequence][3] = error;
+    data[globalSequence][6] = error;
+    data[globalSequence][5] = Math.abs(error);
+    data[globalSequence][7] = globalSequence;
     //Create CSV
     download_csv(data);
   }
   else {
-    data[globalSequence][3] = error;
+    data[globalSequence][6] = error;
+    data[globalSequence][5] = Math.abs(error);
+    data[globalSequence][7] = globalSequence;
     globalSequence++; //increments the global sequence by 1, so that the next question is displayed.
     changeImage(folderArray[globalSequence]);
   }
 }
 
 function download_csv(data) {
-  var csv = 'Trend, Chart, Slope, Error(signed)\n';
+  var csv = 'Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath\n';
   data.forEach(function(row) {
     csv += row.join(',');
     csv += "\n";
@@ -78,13 +82,13 @@ function getParticipant(){
   var participantNumberString = e.options[e.selectedIndex].value;
   switch (participantNumberString) {
     case "P1":
-      return "Participant 1";
+      return "1";
     case "P2":
-      return "Participant 2";
+      return "2";
     case "P3":
-      return "Participant 3";
+      return "3";
     case "P4":
-      return "Participant 4";
+      return "4";
   }
 }
 
@@ -103,16 +107,21 @@ function getExperimentSequence(){
     filepath = filepath + trend + "/" + chart + "/" + slopeAndBandwidth + "/";
     folderArray[i] = filepath;
 
-    data[i][0] = trend;
-    data[i][1] = chart;
-    data[i][2] = slopeAndBandwidth;
+    var [, sigma, m] = slopeAndBandwidth.match(/s(.+?)m(.*)$/); //get sigma and m from the folder string
+
+    data[i][0] = sigma;
+    data[i][1] = trend;
+    data[i][2] = m;
+    data[i][3] = getParticipant();
+    data[i][4] = chart;
+    data[i][8] = filepath;
   }
   return folderArray;
 }
 
 function startExperiment(){
   for(let i = 0; i < maxSequenceLength; i++){
-    data[i] = Array(4).fill(""); //Initializes the empty answer arrays
+    data[i] = Array(9).fill(""); //Initializes the empty answer arrays
   }
   getExperimentSequence();
   changeImage(folderArray[globalSequence]);
