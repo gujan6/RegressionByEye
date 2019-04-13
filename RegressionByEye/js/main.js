@@ -85,10 +85,14 @@ function getParticipant(){
 
 function getExperimentSequence(participant){
   //Code for the sequence
+  console.debug("get exp sequence for", participant);
 
   let participantArray = experiment.get(participant);
+
+  console.debug(participantArray);
+
   //Should pick make a list of filepaths which contain the images
-  for(let i = 0; i < maxSequenceLength; i++){
+  for(let i = 0; i < participantArray.length; i++){
     let trend = participantArray[i].type;
     let chart = participantArray[i].graphtype;
     let filepath = participantArray[i].imgs;
@@ -277,7 +281,58 @@ function extractFieldsFromRecord(fields, record) {
   return trialDefinition;
 }
 
+function buildDemoSequence(){
+  return [
+    {
+      "participantId": "Demo",
+      "trialId": "10001",
+      "blockSeq": "1",
+      "graphtype": "line",
+      "sigma": 0.05,
+      "m": 0.4,
+      "type": "trig",
+      "imgs": "img/trig/line/s0.05m0.4/"
+    },
+    {
+      "participantId": "Demo",
+      "trialId": "10002",
+      "blockSeq": "2",
+      "graphtype": "area",
+      "sigma": 0.15,
+      "m": -0.1,
+      "type": "quad",
+      "imgs": "img/quad/area/s0.15m-0.1/"
+    },
+    {
+      "participantId": "Demo",
+      "trialId": "10003",
+      "blockSeq": "3",
+      "graphtype": "scatter",
+      "sigma": 0.2,
+      "m": 0.8,
+      "type": "line",
+      "imgs": "img/line/scatter/s0.2m0.8/"
+    },
+    {
+      "participantId": "Demo",
+      "trialId": "10004",
+      "blockSeq": "4",
+      "graphtype": "area",
+      "sigma": 0.15,
+      "m": -0.2,
+      "type": "line",
+      "imgs": "img/line/area/s0.15m-0.2/"
+    },
+  ]
+}
+
 $(document).ready(function () {
+  console.debug("doc ready.");
+  experiment = new Map();
+  experiment.set("Demo", buildDemoSequence());
+
+  console.debug(experiment);
+
   if (isFileAPIAvailable()) {
     $('#files').bind('change', handleDialog);
   }
