@@ -257,7 +257,9 @@ function handleTouchstoneCSVData(data) {
   console.info("Parsed experiment trials by participants:")
   console.info(trialsByParticipants);
 
-  experiment = trialsByParticipants;
+  for(let part of trialsByParticipants){
+    experiment.set(part[0], part[1]);
+  }
 }
 
 function extractFieldsFromRecord(fields, record) {
