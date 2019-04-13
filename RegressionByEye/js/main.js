@@ -2,7 +2,7 @@
 
 //Global variables
 var globalSequence = 0;
-var maxSequenceLength = 5; //How many charts are shown to the participant (NEEDS TO BE EQUAL OR SMALLER THAN folderArray)
+var maxSequenceLength = 4; //How many charts are shown to the participant (NEEDS TO BE EQUAL OR SMALLER THAN folderArray)
 var numberArray = Array(60).fill(0);
 var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array which will be filled with the folders of the images;
 var data= Array(maxSequenceLength).fill("");
