@@ -92,7 +92,7 @@ function getExperimentSequence(participant){
   console.debug(participantArray);
 
   //Should pick make a list of filepaths which contain the images
-  for(let i = 0; i < participantArray.length; i++){
+  for(let i = 0; i < maxSequenceLength; i++){
     let trend = participantArray[i].type;
     let chart = participantArray[i].graphtype;
     let filepath = participantArray[i].imgs;
@@ -259,6 +259,7 @@ function handleTouchstoneCSVData(data) {
 
   for(let part of trialsByParticipants){
     experiment.set(part[0], part[1]);
+    $('#participantSelection').append('<option value="'+part[0]+'">'+part[0]+'</option>');
   }
 }
 
