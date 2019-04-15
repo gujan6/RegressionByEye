@@ -125,6 +125,7 @@ function startExperiment(){
   changeImage(folderArray[globalSequence]);
 
   document.getElementById('setup').style.visibility = 'hidden'; //Hide Setup when experiment starts
+  document.getElementById('mainArea').style.visibility = 'visible';
 }
 
 
