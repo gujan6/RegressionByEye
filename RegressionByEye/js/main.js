@@ -8,6 +8,7 @@ var folderArray = Array(maxSequenceLength).fill("folder");  //declare an array w
 var data= Array(maxSequenceLength).fill("");
 var experiment;
 
+
 //This function returns an array with a sequence of ten numbers
 function getImages(){
   let imageNrArray = Array(100).fill(0);
@@ -20,6 +21,7 @@ function getImages(){
   return imageNrArray
 }
 
+
 //Shows images in the passed folder and changes the image based on the slider position
 function changeImage(folder){
   numberArray = getImages();
@@ -31,6 +33,7 @@ function changeImage(folder){
     document.getElementById("img").src = folder + numberArray[this.value - 1] + ".png";
   }
 }
+
 
 function submitAnswer(){
   let slider = document.getElementById("myRange");
@@ -58,12 +61,14 @@ function submitAnswer(){
   }
 }
 
+
 function download_csv(data) {
-  let csv = 'Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath\n';
+  let csv = 'Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath, isValidation\n';
   data.forEach(function(row) {
     csv += row.join(',');
     csv += "\n";
   });
+
 
   console.log(csv);
   let hiddenElement = document.createElement('a');
@@ -73,9 +78,11 @@ function download_csv(data) {
   hiddenElement.click();
 }
 
+
 function calculateError(imageNumber){
-  return (imageNumber - 50) * 0.01;
+  return (imageNumber - 50) * 0.01; //each image has a 0.01 difference, so we can multiply the amount of images the are off by times 0.01
 }
+
 
 //Returns the selected participant from the dropdown
 function getParticipant(){
@@ -83,30 +90,27 @@ function getParticipant(){
   return e.options[e.selectedIndex].value;
 }
 
+
 function getExperimentSequence(participant){
   //Code for the sequence
   console.debug("get exp sequence for", participant);
-
-  let participantArray = experiment.get(participant);
-
+  var participantArray = experiment.get(participant);
   console.debug(participantArray);
-
   //Should pick make a list of filepaths which contain the images
   for(let i = 0; i < maxSequenceLength; i++){
-    let trend = participantArray[i].type;
-    let chart = participantArray[i].graphtype;
-    let filepath = participantArray[i].imgs;
+    var filepath = participantArray[i].imgs;
     folderArray[i] = filepath;
-
     data[i][0] = participantArray[i].sigma;
-    data[i][1] = trend;
+    data[i][1] = participantArray[i].type;
     data[i][2] = participantArray[i].m;
     data[i][3] = participant;
-    data[i][4] = chart;
+    data[i][4] = participantArray[i].graphtype;
     data[i][8] = filepath;
+    data[i][9] = participantArray[i].validation;
   }
   return folderArray;
 }
+
 
 function startExperiment(){
   let valuesTemp;
@@ -115,22 +119,21 @@ function startExperiment(){
   } else { //if regular experiment, set sequence length the the length of the imported csv
     valuesTemp = experiment.values();
     valuesTemp.next().value;
-    maxSequenceLength = valuesTemp.next().value.length;
+    maxSequenceLength = valuesTemp.next().value.length; //take length of csv plus 4 (for the validation plots)
     console.log(maxSequenceLength);
   }
   for(let i = 0; i < maxSequenceLength; i++){
-    data[i] = Array(9).fill(""); //Initializes the empty answer arrays
+    data[i] = Array(10).fill(""); //Initializes the empty answer arrays
   }
   getExperimentSequence(getParticipant());
   changeImage(folderArray[globalSequence]);
-
   document.getElementById('setup').style.visibility = 'hidden'; //Hide Setup when experiment starts
   document.getElementById('mainArea').style.visibility = 'visible';
 }
 
+
 // Reader for a Touchstone2 experiment csv export file.
 // - CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html
-
 const kvSlopes = [
   ['n_0_8', -0.8],
   ['n_0_4', -0.4],
@@ -142,7 +145,6 @@ const kvSlopes = [
   ['p_0_8', 0.8],
 ];
 const slopes = new Map(kvSlopes);
-
 const kvBandwiths = [
   ['b_0_05', 0.05],
   ['b_0_1', 0.1],
@@ -150,6 +152,7 @@ const kvBandwiths = [
   ['b_0_2', 0.2]
 ];
 const bandwiths = new Map(kvBandwiths);
+
 
 function isFileAPIAvailable() {
   // Check for the various File API support.
@@ -174,20 +177,22 @@ function isFileAPIAvailable() {
   }
 }
 
+
 function mapSlopeDescription(desc) {
   console.debug("map", desc, slopes.get(desc));
   return slopes.get(desc);
 }
+
 
 function mapBandwidthDescription(desc) {
   console.debug("map", desc, bandwiths.get(desc));
   return bandwiths.get(desc);
 }
 
+
 function handleDialog(event) {
   let files = event.target.files;
   let file = files[0];
-
   let reader = new FileReader();
   reader.readAsText(file);
   reader.onload = function (event) {
@@ -208,7 +213,6 @@ function extractFieldPositions(header) {
     "sigma": { "label": "s" },
     "type": { "label": "f" },
   };
-
   for (let c = 0; c < header.length; c++) {
     let column = header[c];
     switch (column) {
@@ -245,42 +249,37 @@ function extractFieldPositions(header) {
     }
   }
   console.debug(fields);
-
   return fields;
 }
 
+
 function handleTouchstoneCSVData(data) {
   const fields = extractFieldPositions(data[0]);
-
   let trialsByParticipants = new Map();
-
   for (let i = 1; i < data.length; i++) {
     let trialDef = extractFieldsFromRecord(fields, data[i]);
     let participantId = trialDef.participantId;
-
     if (!trialsByParticipants.has(participantId)) {
       console.debug("New participant id", participantId);
       trialsByParticipants.set(participantId, [])
     }
-
     trialsByParticipants.get(participantId).push(trialDef);
   }
-
   console.info("Parsed experiment trials by participants:");
   console.info(trialsByParticipants);
-
   for(let part of trialsByParticipants){
     experiment.set(part[0], part[1]);
     $('#participantSelection').append('<option value="'+part[0]+'">'+part[0]+'</option>');
   }
 }
 
+
 function extractFieldsFromRecord(fields, record) {
   let chart = record[fields.graphtype.pos];
   let slope = mapSlopeDescription(record[fields.m.pos]);
   let bandwidth = mapBandwidthDescription(record[fields.sigma.pos]);
   let func = record[fields.type.pos];
-
+  let nonValidation = 0;
   let trialDefinition = {
     "participantId": "P" + record[fields.participantId.pos],
     "trialId": record[fields.trialId.pos],
@@ -289,12 +288,13 @@ function extractFieldsFromRecord(fields, record) {
     "sigma": bandwidth,
     "m": slope,
     "type": func,
-    "imgs": "img/" + func + "/" + chart + "/s" + bandwidth + "m" + slope + "/"
+    "imgs": "img/" + func + "/" + chart + "/s" + bandwidth + "m" + slope + "/",
+    "validation": nonValidation
   };
-
   console.debug(trialDefinition);
   return trialDefinition;
 }
+
 
 function buildDemoSequence(){
   return [
@@ -341,13 +341,12 @@ function buildDemoSequence(){
   ]
 }
 
+
 $(document).ready(function () {
   console.debug("doc ready.");
   experiment = new Map();
   experiment.set("Demo", buildDemoSequence());
-
   console.debug(experiment);
-
   if (isFileAPIAvailable()) {
     $('#files').bind('change', handleDialog);
   }
