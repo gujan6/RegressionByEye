@@ -84,8 +84,8 @@ void generateValidationData() {
         for(int k=startAt; k <= endAt; k++) {
           float slope = Precision.round(((base + k) * 0.01) + j, 2);
           drawPointsArea(tempPoints);
-          drawTrend(slope);
           drawTrend_black(j);
+          drawTrend(slope);
           save(dirname+"line/area/s"+i+"m"+j+"/" + k +".png");
         }
 
