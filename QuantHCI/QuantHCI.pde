@@ -14,8 +14,96 @@ String dirname;
 void setup() {
   size(300, 525);
   pixelDensity(displayDensity());
-  generateExperimentData();
+  generateValidationData();
+  //generateExperimentData();
   exit();
+}
+
+void generateValidationData() {
+  dirname = "Validation/";
+  float[][] points;
+  float[] fit;
+  float[] residuals;
+  float[] bestResiduals;
+  float[][] tempPoints;
+  float merror;
+  float bestmerror;
+
+  List<String> combinations = new ArrayList<String>();
+
+  System.out.println("__ START __");            
+
+  float[] slopes = {-0.2f, -0.4f, 0.1f, 0.8f}; 
+  float[] bandwiths = {0.05f, 0.1f, 0.15f, 0.2f};
+
+
+  if(slopes.length != bandwiths.length){
+    System.err.println("Slope and Bandwith Arrays must be of same lenght!");
+    System.exit(-1);
+  }
+
+  for(int valIter=0; valIter < slopes.length; valIter++) { 
+
+      float i= bandwiths[valIter]; // current bandwith
+      float j= slopes[valIter]; // current slope
+
+      combinations.add("s"+i+"m"+j);
+
+      System.out.println("Generate data for S"+i+ "m"+j+" ..."); 
+
+      if (j!=0 && round(j*1000)!=0) {
+        bestmerror = 2;
+        residuals = genResiduals(100, i);
+        bestResiduals = permute(residuals);
+        points = genPoints(100, 1.0, j, true);
+        points = zoom(points);
+        tempPoints = genPoints(100, 1.0, j, true);
+        for (int k = 0; k<100; k++) {
+          tempPoints = deepCopy(points);
+          fit = fit(points);
+          residuals = permute(residuals);
+          tempPoints = addResiduals(tempPoints, fit, residuals);
+          fit = fit(tempPoints);
+          merror = abs(j-fit[0]);
+          if ((merror<bestmerror)||k==0) {
+            bestResiduals = residuals;
+            bestmerror = merror;
+          }
+        }
+
+        fit = fit(points);
+
+        int base = -50;
+        int startAt = 1;
+        int endAt = 100;
+
+        // Area linear
+        tempPoints = addResiduals(points, bestResiduals, j, 'l');
+        fit = fit(points);
+        merror = abs(j-fit[0]);
+        for(int k=startAt; k <= endAt; k++) {
+          float slope = Precision.round(((base + k) * 0.01) + j, 2);
+          drawPointsArea(tempPoints);
+          drawTrend(slope);
+          drawTrend_black(j);
+          save(dirname+"line/area/s"+i+"m"+j+"/" + k +".png");
+        }
+
+      }
+
+    }
+  
+
+  System.out.println("__ END __");            
+
+  StringBuffer sb = new StringBuffer();
+  for(String c : combinations){
+    sb.append("\""+c+"\", ");
+  }
+  
+  System.out.println();
+  System.out.println("Generated combinations:");
+  System.out.println(sb.toString());
 }
 
 void generateExperimentData() {
@@ -341,6 +429,11 @@ void drawTrend(float m) {
   drawTrend(new float[]{m, b});
 }
 
+void drawTrend_black(float m) {
+  float b = map(m, -1, 1, 1, 0);
+  drawTrend_black(new float[]{m, b});
+}
+
 void drawTTrend(float m) {
   float resolution = 100;
   float X1;
@@ -348,6 +441,23 @@ void drawTTrend(float m) {
   float X2;
   float Y2;
   stroke(227, 0, 255);
+  strokeWeight(2);
+  for (int i = 0; i<resolution-1; i++) {
+    X1 = map(i, 0, resolution, 0, PI);
+    Y1 = map(-1 * m * cos(X1), -1, 1, 0, 1);
+    X2 = map(i+1, 0, resolution, 0, PI);
+    Y2 = map(-1 * m * cos(X2), -1, 1, 0, 1);
+    line(toScreenX(i/resolution), toScreenY(Y1), toScreenX((i+1)/resolution), toScreenY(Y2));
+  }
+}
+
+void drawTTrend_black(float m) {
+  float resolution = 100;
+  float X1;
+  float Y1;
+  float X2;
+  float Y2;
+  stroke(0, 0, 0);
   strokeWeight(2);
   for (int i = 0; i<resolution-1; i++) {
     X1 = map(i, 0, resolution, 0, PI);
@@ -377,8 +487,33 @@ void drawQTrend(float m) {
   }
 }
 
+void drawQTrend_black(float m) {
+  float b = map(m, -1, 1, 1, 0);
+  float resolution = 100;
+  float X1;
+  float Y1;
+  float X2;
+  float Y2;
+  stroke(0, 0, 0);
+  strokeWeight(2);
+ 
+  for (int i = 0; i<resolution; i++) {
+    X1 = map(i, 0, resolution, 0, 1);
+    Y1 = m*sq(X1)+b;
+    X2 = map(i+1, 0, resolution, 0, 1);
+    Y2 = m*sq(X2)+b;
+    line(toScreenX(i/resolution), toScreenY(Y1), toScreenX((i+1)/resolution), toScreenY(Y2));
+  }
+}
+
 void drawTrend(float[] fit) {
   stroke(227, 0, 255);
+  strokeWeight(2);
+  line(toScreenX(0), toScreenY(fit[1]), toScreenX(1), toScreenY(fit[0]+fit[1]));
+}
+
+void drawTrend_black(float[] fit) {
+  stroke(0, 0, 0);
   strokeWeight(2);
   line(toScreenX(0), toScreenY(fit[1]), toScreenX(1), toScreenY(fit[0]+fit[1]));
 }
