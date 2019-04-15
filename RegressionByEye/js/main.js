@@ -33,7 +33,7 @@ function changeImage(folder){
 }
 
 function submitAnswer(){
-  var slider = document.getElementById("myRange");
+  let slider = document.getElementById("myRange");
   let selectedImageNr = numberArray[slider.value - 1];
   console.log(selectedImageNr); //Prints the image number (out of the total 100 images
   let error = calculateError(selectedImageNr);
@@ -59,7 +59,7 @@ function submitAnswer(){
 }
 
 function download_csv(data) {
-  var csv = 'Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath\n';
+  let csv = 'Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath\n';
   data.forEach(function(row) {
     csv += row.join(',');
     csv += "\n";
@@ -109,10 +109,10 @@ function getExperimentSequence(participant){
 }
 
 function startExperiment(){
-  if(getParticipant() === "Demo"){ //if demo then set length to 4
+  let valuesTemp;
+  if (getParticipant() === "Demo") { //if demo then set length to 4
     maxSequenceLength = 4;
-  }
-  else{ //if regular experiment, set sequence length the the length of the imported csv
+  } else { //if regular experiment, set sequence length the the length of the imported csv
     valuesTemp = experiment.values();
     valuesTemp.next().value;
     maxSequenceLength = valuesTemp.next().value.length;
@@ -127,7 +127,6 @@ function startExperiment(){
   document.getElementById('setup').style.visibility = 'hidden'; //Hide Setup when experiment starts
   document.getElementById('mainArea').style.visibility = 'visible';
 }
-
 
 // Reader for a Touchstone2 experiment csv export file.
 // - CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html
@@ -180,27 +179,27 @@ function mapSlopeDescription(desc) {
   return slopes.get(desc);
 }
 
-function mapBandwithDescription(desc) {
+function mapBandwidthDescription(desc) {
   console.debug("map", desc, bandwiths.get(desc));
   return bandwiths.get(desc);
 }
 
 function handleDialog(event) {
-  var files = event.target.files;
-  var file = files[0];
+  let files = event.target.files;
+  let file = files[0];
 
-  var reader = new FileReader();
+  let reader = new FileReader();
   reader.readAsText(file);
   reader.onload = function (event) {
-    var csv = event.target.result;
-    var data = $.csv.toArrays(csv);
+    let csv = event.target.result;
+    let data = $.csv.toArrays(csv);
     handleTouchstoneCSVData(data);
   }
 }
 
 
 function extractFieldPositions(header) {
-  var fields = {
+  let fields = {
     "participantId": { "label": "ParticipantID" },
     "trialId": { "label": "TrialID" },
     "blockSeq": { "label": "Block1" },
@@ -210,8 +209,8 @@ function extractFieldPositions(header) {
     "type": { "label": "f" },
   };
 
-  for (c = 0; c < header.length; c++) {
-    var column = header[c];
+  for (let c = 0; c < header.length; c++) {
+    let column = header[c];
     switch (column) {
       case fields.participantId.label:
         console.debug(fields.participantId.label, "at pos", c);
@@ -253,11 +252,11 @@ function extractFieldPositions(header) {
 function handleTouchstoneCSVData(data) {
   const fields = extractFieldPositions(data[0]);
 
-  var trialsByParticipants = new Map();
+  let trialsByParticipants = new Map();
 
-  for (i = 1; i < data.length; i++) {
-    var trialDef = extractFieldsFromRecord(fields, data[i]);
-    var participantId = trialDef.participantId;
+  for (let i = 1; i < data.length; i++) {
+    let trialDef = extractFieldsFromRecord(fields, data[i]);
+    let participantId = trialDef.participantId;
 
     if (!trialsByParticipants.has(participantId)) {
       console.debug("New participant id", participantId);
@@ -267,7 +266,7 @@ function handleTouchstoneCSVData(data) {
     trialsByParticipants.get(participantId).push(trialDef);
   }
 
-  console.info("Parsed experiment trials by participants:")
+  console.info("Parsed experiment trials by participants:");
   console.info(trialsByParticipants);
 
   for(let part of trialsByParticipants){
@@ -277,21 +276,21 @@ function handleTouchstoneCSVData(data) {
 }
 
 function extractFieldsFromRecord(fields, record) {
-  var chart = record[fields.graphtype.pos];
-  var slope = mapSlopeDescription(record[fields.m.pos]);
-  var bandwith = mapBandwithDescription(record[fields.sigma.pos]);
-  var func = record[fields.type.pos];
+  let chart = record[fields.graphtype.pos];
+  let slope = mapSlopeDescription(record[fields.m.pos]);
+  let bandwidth = mapBandwidthDescription(record[fields.sigma.pos]);
+  let func = record[fields.type.pos];
 
-  var trialDefinition = {
+  let trialDefinition = {
     "participantId": "P" + record[fields.participantId.pos],
     "trialId": record[fields.trialId.pos],
     "blockSeq": record[fields.blockSeq.pos],
     "graphtype": chart,
-    "sigma": bandwith,
+    "sigma": bandwidth,
     "m": slope,
     "type": func,
-    "imgs": "img/" + func + "/" + chart + "/s" + bandwith + "m" + slope + "/"
-  }
+    "imgs": "img/" + func + "/" + chart + "/s" + bandwidth + "m" + slope + "/"
+  };
 
   console.debug(trialDefinition);
   return trialDefinition;
