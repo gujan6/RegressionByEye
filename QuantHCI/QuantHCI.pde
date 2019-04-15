@@ -15,7 +15,7 @@ void setup() {
   size(300, 525);
   pixelDensity(displayDensity());
   generateValidationData();
-  //generateExperimentData();
+  generateExperimentData();
   exit();
 }
 
