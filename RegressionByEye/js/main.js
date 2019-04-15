@@ -10,7 +10,7 @@ var experiment;
 
 //This function returns an array with a sequence of ten numbers
 function getImages(){
-  var imageNrArray = Array(100).fill(0);
+  let imageNrArray = Array(100).fill(0);
   let start = Math.floor(Math.random() * 40) + 1;
   for(let i = 0; i < 60; i++){
     imageNrArray[i] = start;
@@ -23,8 +23,8 @@ function getImages(){
 //Shows images in the passed folder and changes the image based on the slider position
 function changeImage(folder){
   numberArray = getImages();
-  var slider = document.getElementById("myRange");
-  var defaultImageNumber = numberArray[slider.value - 1];
+  let slider = document.getElementById("myRange");
+  let defaultImageNumber = numberArray[slider.value - 1];
   //Get first image, based on the first number in the array
   document.getElementById("img").src = folder + defaultImageNumber + ".png";
   slider.oninput = function() {
@@ -36,7 +36,7 @@ function submitAnswer(){
   var slider = document.getElementById("myRange");
   let selectedImageNr = numberArray[slider.value - 1];
   console.log(selectedImageNr); //Prints the image number (out of the total 100 images
-  var error = calculateError(selectedImageNr);
+  let error = calculateError(selectedImageNr);
   //Writes answer to an array, which can then be converted to csv, and triggers the next image
   if(globalSequence + 1 === maxSequenceLength){
     data[globalSequence][5] = error; //error
@@ -66,7 +66,7 @@ function download_csv(data) {
   });
 
   console.log(csv);
-  var hiddenElement = document.createElement('a');
+  let hiddenElement = document.createElement('a');
   hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
   hiddenElement.target = '_blank';
   hiddenElement.download = getParticipant() + '.csv';
@@ -74,12 +74,12 @@ function download_csv(data) {
 }
 
 function calculateError(imageNumber){
-  return error = (imageNumber - 50) * 0.01;
+  return (imageNumber - 50) * 0.01;
 }
 
 //Returns the selected participant from the dropdown
 function getParticipant(){
-  var e = document.getElementById("participantSelection");
+  let e = document.getElementById("participantSelection");
   return e.options[e.selectedIndex].value;
 }
 
@@ -109,12 +109,24 @@ function getExperimentSequence(participant){
 }
 
 function startExperiment(){
+  if(getParticipant() === "Demo"){ //if demo then set length to 4
+    maxSequenceLength = 4;
+  }
+  else{ //if regular experiment, set sequence length the the length of the imported csv
+    valuesTemp = experiment.values();
+    valuesTemp.next().value;
+    maxSequenceLength = valuesTemp.next().value.length;
+    console.log(maxSequenceLength);
+  }
   for(let i = 0; i < maxSequenceLength; i++){
     data[i] = Array(9).fill(""); //Initializes the empty answer arrays
   }
   getExperimentSequence(getParticipant());
   changeImage(folderArray[globalSequence]);
+
+  document.getElementById('setup').style.visibility = 'hidden'; //Hide Setup when experiment starts
 }
+
 
 // Reader for a Touchstone2 experiment csv export file.
 // - CSV File Handling is based on https://github.com/evanplaice/jquery-csv/blob/master/examples/file-handling.html
