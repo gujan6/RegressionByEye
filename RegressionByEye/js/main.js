@@ -114,8 +114,8 @@ function getExperimentSequence(participant){
 
 function startExperiment(){
   let valuesTemp;
-  if (getParticipant() === "Demo") { //if demo then set length to 4
-    maxSequenceLength = 4;
+  if (getParticipant() === "Demo") { //if demo then set length to 5
+    maxSequenceLength = 5;
   } else { //if regular experiment, set sequence length the the length of the imported csv
     valuesTemp = experiment.values();
     valuesTemp.next().value;
@@ -292,7 +292,7 @@ function injectValidationTrials(participantTrials) {
 
     if(injectIntervals.includes(index)){
       console.debug("inject validation at index", index)
-      let validation = buildValidationSequence();
+      let validation = getValidationImage();
       validation.blockSeq = index;
       validation.participantId = trial.participantId;
       trialsWithValidation.push(validation);
@@ -326,7 +326,7 @@ function extractFieldsFromRecord(fields, record) {
   return trialDefinition;
 }
 
-function buildValidationSequence() {
+function getValidationImage() {
   let validationImages = [
     {
       "participantId": "xxxx",
@@ -386,7 +386,8 @@ function buildDemoSequence(){
       "sigma": 0.05,
       "m": 0.4,
       "type": "trig",
-      "imgs": "img/trig/line/s0.05m0.4/"
+      "imgs": "img/trig/line/s0.05m0.4/",
+      "validation": 0
     },
     {
       "participantId": "Demo",
@@ -396,27 +397,41 @@ function buildDemoSequence(){
       "sigma": 0.15,
       "m": -0.1,
       "type": "quad",
-      "imgs": "img/quad/area/s0.15m-0.1/"
+      "imgs": "img/quad/area/s0.15m-0.1/",
+      "validation": 0
     },
     {
       "participantId": "Demo",
       "trialId": "10003",
       "blockSeq": "3",
-      "graphtype": "scatter",
-      "sigma": 0.2,
-      "m": 0.8,
+      "graphtype": "area",
+      "sigma": 0.01,
+      "m": -0.4,
       "type": "line",
-      "imgs": "img/line/scatter/s0.2m0.8/"
+      "imgs": "img_validation/line/area/s0.1m-0.4/",
+      "validation": 1
     },
     {
       "participantId": "Demo",
       "trialId": "10004",
       "blockSeq": "4",
+      "graphtype": "scatter",
+      "sigma": 0.2,
+      "m": 0.8,
+      "type": "line",
+      "imgs": "img/line/scatter/s0.2m0.8/",
+      "validation": 0
+    },
+    {
+      "participantId": "Demo",
+      "trialId": "10005",
+      "blockSeq": "5",
       "graphtype": "area",
       "sigma": 0.15,
       "m": -0.2,
       "type": "line",
-      "imgs": "img/line/area/s0.15m-0.2/"
+      "imgs": "img/line/area/s0.15m-0.2/",
+      "validation": 0
     },
   ]
 }
