@@ -268,8 +268,7 @@ function handleTouchstoneCSVData(data) {
   console.info("Parsed experiment trials by participants:");
   console.info(trialsByParticipants);
   for(let part of trialsByParticipants){
-    injectValidationTrials(part[1]);
-    experiment.set(part[0], part[1]);
+    experiment.set(part[0], injectValidationTrials(part[1]));
     $('#participantSelection').append('<option value="'+part[0]+'">'+part[0]+'</option>');
   }
 }
@@ -303,10 +302,8 @@ function injectValidationTrials(participantTrials) {
   }
 
   console.error(trialsWithValidation);
-
-  
+  return trialsWithValidation;
 }
-
 
 function extractFieldsFromRecord(fields, record) {
   let chart = record[fields.graphtype.pos];
@@ -338,7 +335,8 @@ function buildValidationSequence() {
       "sigma": 0.02,
       "m": 0.8,
       "type": "line",
-      "imgs": "img_validation/line/area/s0.2m0.8/"
+      "imgs": "img_validation/line/area/s0.2m0.8/",
+      "validation": 1
     };
 }
 
