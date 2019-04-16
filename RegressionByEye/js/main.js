@@ -120,7 +120,7 @@ function startExperiment(){
     valuesTemp = experiment.values();
     valuesTemp.next().value;
     maxSequenceLength = valuesTemp.next().value.length; //take length of csv plus 4 (for the validation plots)
-    console.log(maxSequenceLength);
+    console.debug("Max SequenceLength" ,maxSequenceLength);
   }
   for(let i = 0; i < maxSequenceLength; i++){
     data[i] = Array(10).fill(""); //Initializes the empty answer arrays
@@ -301,7 +301,7 @@ function injectValidationTrials(participantTrials) {
 
   }
 
-  console.error(trialsWithValidation);
+  console.debug(trialsWithValidation);
   return trialsWithValidation;
 }
 
@@ -327,7 +327,19 @@ function extractFieldsFromRecord(fields, record) {
 }
 
 function buildValidationSequence() {
-  return {
+  let validationImages = [
+    {
+      "participantId": "xxxx",
+      "trialId": "-1",
+      "blockSeq": "-1",
+      "graphtype": "area",
+      "sigma": 0.01,
+      "m": -0.4,
+      "type": "line",
+      "imgs": "img_validation/line/area/s0.1m-0.4/",
+      "validation": 1
+    },
+    {
       "participantId": "xxxx",
       "trialId": "-1",
       "blockSeq": "-1",
@@ -337,7 +349,31 @@ function buildValidationSequence() {
       "type": "line",
       "imgs": "img_validation/line/area/s0.2m0.8/",
       "validation": 1
-    };
+    },
+    {
+      "participantId": "xxxx",
+      "trialId": "-1",
+      "blockSeq": "-1",
+      "graphtype": "area",
+      "sigma": 0.05,
+      "m": -0.2,
+      "type": "line",
+      "imgs": "img_validation/line/area/s0.05m-0.2/",
+      "validation": 1
+    },
+    {
+      "participantId": "xxxx",
+      "trialId": "-1",
+      "blockSeq": "-1",
+      "graphtype": "area",
+      "sigma": 0.15,
+      "m": 0.1,
+      "type": "line",
+      "imgs": "img_validation/line/area/s0.15m0.1/",
+      "validation": 1
+    },
+  ];
+  return validationImages[ Math.floor(Math.random() * 3) + 0 ];
 }
 
 function buildDemoSequence(){
