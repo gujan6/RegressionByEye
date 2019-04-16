@@ -268,9 +268,43 @@ function handleTouchstoneCSVData(data) {
   console.info("Parsed experiment trials by participants:");
   console.info(trialsByParticipants);
   for(let part of trialsByParticipants){
+    injectValidationTrials(part[1]);
     experiment.set(part[0], part[1]);
     $('#participantSelection').append('<option value="'+part[0]+'">'+part[0]+'</option>');
   }
+}
+
+function injectValidationTrials(participantTrials) {
+  let trialsWithValidation = []
+
+  let validationInterval = Math.floor(participantTrials.length/5);
+  console.debug("Val interval:", validationInterval);
+  let injectIntervals = [];
+  for(vi=1; vi<=4;vi++){
+    injectIntervals.push(validationInterval * vi);
+  }
+
+  let index = 0;
+  for(let trial of participantTrials){
+
+    trial.blockSeq = index;
+    trialsWithValidation.push(trial);
+    index++;
+
+    if(injectIntervals.includes(index)){
+      console.debug("inject validation at index", index)
+      let validation = buildValidationSequence();
+      validation.blockSeq = index;
+      validation.participantId = trial.participantId;
+      trialsWithValidation.push(validation);
+      index++;
+    }
+
+  }
+
+  console.error(trialsWithValidation);
+
+  
 }
 
 
@@ -295,6 +329,18 @@ function extractFieldsFromRecord(fields, record) {
   return trialDefinition;
 }
 
+function buildValidationSequence() {
+  return {
+      "participantId": "xxxx",
+      "trialId": "-1",
+      "blockSeq": "-1",
+      "graphtype": "area",
+      "sigma": 0.02,
+      "m": 0.8,
+      "type": "line",
+      "imgs": "img_validation/line/area/s0.2m0.8/"
+    };
+}
 
 function buildDemoSequence(){
   return [
