@@ -18,17 +18,39 @@ Follow these steps to get the experiment web page up and running:
 - Extract the archive file
 - Open the `<extracted-zip-folder>/RegressionByEye` folder
 - Open the `index.html` file with Google's Chrome browser (The wep page is optimized for Chrome).
-- To start a demo run
+- To start a demo run:
     - choose `Demo` in the participant selection box in the left menu panel
     - press `Start Experiment`
     - let the participant go through the demo squence (including one validation image)
-- To run an actual experiment
+- To run an actual experiment:
     - Import the Touchstone2 trial sequnece csv (there is a predefined file in `<extracted-zip-folder>/RegressionByEye/touchstone_import/Experiment.csv`)
         - To generate a new trial sequence csv follow the instructions in chapter `Generate a Touchstone 2 Trial Sequence`
     - choose the participant number in the participant selection box in the left menu panel
     - press `Start Experiment`
     - let the participant go through the full trial squence (including 4 validation images)
-- The results of the run are downloaded as csv automatically at the end
+- The experiment resultsare downloaded as csv automatically at the end of a run
 
 
-## Generate a Touchstone 2 Trial Sequence
+## Generate a Touchstone 2 Trial Sequence CSV
+
+- Import our Experiment definition as workspace into Touchstone 2 (The workspace xml lies at `<extracted-zip-folder>/RegressionByEye/touchstone_import/Touchstone_RegByEye.xml`) 
+- The Touchstone workspace holds two experiment design
+- Download both trial tables as csv files (use the `Export Trial Table` button).
+- Merge both exportet trial tables into one
+    - Simplest way is to copy the `f` column of the `Rand. Function` design into the `RegressionByEye` design file. 
+- The merged file is ready for import by our web page.
+
+## Generate new Test and Validation Images
+
+The experiment release package comes with the needed test and validation images. Should you still need to generate new images, use the  `<extracted-zip-folder>/QuantHCI/QuantHCI.pde` file. 
+To run the pde file:
+
+- use the `Processing` editor (https://processing.org/download/)
+- and add the Apache Commons Math (commons-math3-3.6.1) dependancy to the editor
+
+The images will be saved in the  `<extracted-zip-folder>/QuantHCI/Experiment` respectively in the  `<extracted-zip-folder>/QuantHCI/Validation`folder.
+
+
+
+
+
