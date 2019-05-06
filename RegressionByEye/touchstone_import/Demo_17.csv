@@ -1,0 +1,6 @@
+Sigma, Type, M, Participant, Graph Type, Error, Error (unsigned), Index, Filepath, isValidation
+0.05,trig,0.4,Demo,line,0.04,0.04,0,img/trig/line/s0.05m0.4/,0
+0.15,quad,-0.1,Demo,area,-0.06,0.06,1,img/quad/area/s0.15m-0.1/,0
+0.01,line,-0.4,Demo,area,0,0,2,img_validation/line/area/s0.1m-0.4/,1
+0.2,line,0.8,Demo,scatter,0.2,0.2,3,img/line/scatter/s0.2m0.8/,0
+0.15,line,-0.2,Demo,area,0.01,0.01,4,img/line/area/s0.15m-0.2/,0
