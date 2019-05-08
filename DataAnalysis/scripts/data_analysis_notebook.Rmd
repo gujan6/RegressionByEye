@@ -17,6 +17,7 @@ Covariantes:
 All variables are within-subjects.
 The dependent variable is the error.
 
+Plan:
 1. open the data
 2. visualisation
 3. ANCOVA analysis
@@ -62,12 +63,12 @@ p18 <- read.csv("./data/P18.csv")
 # merge data from all participant in one df
 our_res <- rbind(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
 # Write all data to a .csv file:
-write.csv(our_res, file = "./data/trend-bias-our-results.csv")
+write.csv(our_res, file = "./data/trend-bias-16-results.csv")
 ```
 
 Open a file with all our results:
 ```{r}
-all_results <- read.csv("./data/trend-bias-our-results.csv")
+all_results <- read.csv("./data/trend-bias-16-results.csv")
 ```
 
 1.2. if the **original data** (from the paper)
