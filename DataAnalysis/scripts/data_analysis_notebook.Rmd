@@ -81,7 +81,7 @@ orig_all_results <- read.csv("../data/original/trend-bias-adjusted.csv")
 
 Taking the **quartiles**:
 ```{r}
-all_results <- subset(all_results, all_results$Error..unsigned. >= quantile(all_results$Error..unsigned., 0.25 ) & all_results$Error..unsigned. <= quantile(all_results$Error..unsigned. , 0.75 ))
+quartiled_results <- subset(all_results, all_results$Error..unsigned. >= quantile(all_results$Error..unsigned., 0.25 ) & all_results$Error..unsigned. <= quantile(all_results$Error..unsigned. , 0.75 ))
 ```
 
 > colnames(p1)
@@ -201,11 +201,11 @@ print(anova(model_trend_type, model_trend_type2))  # Interaction is not signific
 # 4. Futher analysis
 4.1. Average signed error
 ```{r}
-mean(all_results$Error)
+mean(all_results$Error, na.rm = TRUE)
 ```
 One-sample t-test. H0: mean of signed error is null:
 ```{r}
-t.test(all_results$Error)
+t.test(all_results$Error, na.rm = TRUE)
 ```
 This means that on our data the H1 is true...
 
@@ -215,7 +215,12 @@ TukeyHSD(aov, "Type", ordered = TRUE)
 plot(TukeyHSD(aov, "Type"))  # no difference in accuracy
 ```
 
-4.3. **dropterm()**
+4.3. The interquartile mean of the absolute log error across all conditions in this experiment:
+```{r}
+mean(log(quartiled_results$Error..unsigned.), na.rm = TRUE)
+```
+
+4.4. **dropterm()**
 ```{r}
 dropterm(ols1, test='Chisq')
 ```
