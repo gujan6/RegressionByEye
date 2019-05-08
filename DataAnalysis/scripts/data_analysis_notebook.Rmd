@@ -63,7 +63,7 @@ p18 <- read.csv("./data/P18.csv")
 # merge data from all participant in one df
 our_res <- rbind(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
 # to filter from the validation stimuli
-our_res <- filter(our_res, Sigma >= 0.05)
+our_res <- filter(our_res, isValidation == 0)
 # Write all data to a .csv file:
 write.csv(our_res, file = "./data/trend-bias-16-results.csv")
 ```
