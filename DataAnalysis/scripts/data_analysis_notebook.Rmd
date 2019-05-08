@@ -40,7 +40,7 @@ import::from(psycho, analyze)
 
 ## 1. Open the data
 1.1. if **our data**
-Run to join all data files into a single one (do just once):
+Run to join all data files into a single one (do just once: we will not include the part into the final submition):
 ```{r}
 p1 <- read.csv("./data/P1.csv")
 p2 <- read.csv("./data/P2.csv")
@@ -62,18 +62,20 @@ p17 <- read.csv("./data/P17.csv")
 p18 <- read.csv("./data/P18.csv")
 # merge data from all participant in one df
 our_res <- rbind(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
+# to filter from the validation stimuli
+our_res <- filter(our_res, Sigma >= 0.05)
 # Write all data to a .csv file:
 write.csv(our_res, file = "./data/trend-bias-16-results.csv")
 ```
 
 Open a file with all our results:
 ```{r}
-all_results <- read.csv("./data/trend-bias-16-results.csv")
+all_results <- read.csv("../data/trend-bias-16-results.csv")
 ```
 
 1.2. if the **original data** (from the paper)
 ```{r}
-orig_all_results <- read.csv("./data/original/trend-bias-adjusted.csv")
+orig_all_results <- read.csv("../data/original/trend-bias-adjusted.csv")
 ```
 
 
@@ -115,7 +117,7 @@ residuals_plot
 # 2.2. Graph type (Graph.Type)
 graph_plot <- 
   all_results %>% 
-    ggplot(aes(x = Graph.Type, y = Error)) +
+    ggplot(aes(x = Graph.Type, y = Error..unsigned.)) +
         geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
         stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
         ylab("Mean(error)") +
@@ -141,7 +143,7 @@ grid.arrange(residuals_plot, graph_plot, trend_plot, nrow = 1)
 ## 3. Analysis
 3.1. Carry out **three way ANCOVA** (lmer and for "mixed effect" (appears because of the difference between participants) is used)
 ```{r}
-ols1 <- lmer(Error..unsigned. ~ Sigma*Graph.Type*Type + M + (1|Participant), data=orig_all_results)
+ols1 <- lmer(Error..unsigned. ~ Sigma*Graph.Type*Type + M + (1|Participant), data=all_results)
 ancova <- anova(ols1)
 print(ancova)  # Interaction is not significant
 ```
@@ -155,16 +157,12 @@ With interactions between categorical variables and predictor variable are taken
 ```{r}
 model_residual_bandwidth <- aov(Error..unsigned.~Sigma*Participant*M, data=all_results)
 print(summary(model_residual_bandwidth))
-```
 
-Without interactions between categorical variables and predictor variable are taken into account:
-```{r}
+# Without interactions between categorical variables and predictor variable are taken into account:
 model_residual_bandwidth2 <- aov(Error..unsigned.~Sigma+Participant+M, data=all_results)
 print(summary(model_residual_bandwidth2))  # Interaction is not significant
-```
 
-Compare the two models.
-```{r}
+# Compare the two models:
 print(anova(model_residual_bandwidth, model_residual_bandwidth2))
 ```
 
@@ -201,13 +199,23 @@ print(anova(model_trend_type, model_trend_type2))  # Interaction is not signific
 
 
 # 4. Futher analysis
-4.1. **Tukey's Honest Significant Difference** for Trends
+4.1. Average signed error
+```{r}
+mean(all_results$Error)
+```
+One-sample t-test. H0: mean of signed error is null:
+```{r}
+t.test(all_results$Error)
+```
+This means that on our data the H1 is true...
+
+4.2. **Tukey's Honest Significant Difference** for Trend types
 ```{r}
 TukeyHSD(aov, "Type", ordered = TRUE)
-plot(TukeyHSD(aov, "Type")) # no difference in accuracy
+plot(TukeyHSD(aov, "Type"))  # no difference in accuracy
 ```
 
-4.2. **dropterm()**
+4.3. **dropterm()**
 ```{r}
 dropterm(ols1, test='Chisq')
 ```
