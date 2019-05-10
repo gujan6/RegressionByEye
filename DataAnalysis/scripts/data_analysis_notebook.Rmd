@@ -93,8 +93,8 @@ Enter robust linear regression with all the variables for a first impression:
 ols <- lm(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=all_results)
 aov <- aov(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=all_results)
 summary(ols)
-# robust <- coeftest(ols, vcov=vcovHC(ols))
-# robust
+robust <- coeftest(ols, vcov=vcovHC(ols))
+robust
 ```
 
 
