@@ -1,13 +1,6 @@
 # Team H
 # Authors: Mervin Cheok, Elfat Esati, Jan Gugler, Thomas Hugentobler, Lorenz Nagele, Iuliia Nigmatulina
-# Date: 12th of December 2017
-# This script provides all manipulations for the Eclipse project
 
-###
-# Title: "data_analysis_notebook"
-# Output-format: html_document
-###
-  
 ## 0. Description
 # Threeway analysis of covariants (ANCOVA) of the effect of:
 # 1. residual bandwidth
