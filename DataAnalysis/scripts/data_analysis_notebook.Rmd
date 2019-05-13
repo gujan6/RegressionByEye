@@ -1,3 +1,8 @@
+Team H
+Authors: Mervin Cheok, Elfat Esati, Jan Gugler, Thomas Hugentobler, Lorenz Nagele, Iuliia Nigmatulina
+Date: 12th of December 2017
+This script provides all manipulations for the Eclipse project
+
 ---
 title: "data_analysis_notebook"
 output: html_document
@@ -15,16 +20,17 @@ Covariantes:
  - actual slope
 
 All variables are within-subjects.
-The dependent variable is the error.
+Dependent variable: error
 
-Plan:
-1. open the data
-2. visualisation
+Inference plan:
+1. Load and clean the data
+2. Visualisations
 3. ANCOVA analysis
 
 ```{r}
 library(tidyverse)
 library(ggplot2)
+library(grid)
 library(gridExtra)
 library(TukeyC)
 library(car)
@@ -42,46 +48,62 @@ import::from(psycho, analyze)
 1.1. if **our data**
 Run to join all data files into a single one (do just once: we will not include the part into the final submition):
 ```{r}
-p1 <- read.csv("./data/P1.csv")
-p2 <- read.csv("./data/P2.csv")
-p3 <- read.csv("./data/P3.csv")
-p4 <- read.csv("./data/P4.csv")
-p5 <- read.csv("./data/P5.csv")
-p6 <- read.csv("./data/P6.csv")
-p7 <- read.csv("./data/P7.csv")
-p8 <- read.csv("./data/P8.csv")
-# p9 <- read.csv("./data/P9.csv")
-p10 <- read.csv("./data/P10.csv")
-p11 <- read.csv("./data/P11.csv")
-p12 <- read.csv("./data/P12.csv")
-p13 <- read.csv("./data/P13.csv")
-p14 <- read.csv("./data/P14.csv")
-# p15 <- read.csv("./data/P15.csv")
-p16 <- read.csv("./data/P16.csv")
-p17 <- read.csv("./data/P17.csv")
-p18 <- read.csv("./data/P18.csv")
+p1 <- read.csv("../data/P1.csv")
+p2 <- read.csv("../data/P2.csv")
+p3 <- read.csv("../data/P3.csv")
+p4 <- read.csv("../data/P4.csv")
+p5 <- read.csv("../data/P5.csv")
+p6 <- read.csv("../data/P6.csv")
+p7 <- read.csv("../data/P7.csv")
+p8 <- read.csv("../data/P8.csv")
+# p9 <- read.csv("../data/P9.csv")
+p10 <- read.csv("../data/P10.csv")
+p11 <- read.csv("../data/P11.csv")
+p12 <- read.csv("../data/P12.csv")
+p13 <- read.csv("../data/P13.csv")
+p14 <- read.csv("../data/P14.csv")
+# p15 <- read.csv("../data/P15.csv")
+p16 <- read.csv("../data/P16.csv")
+p17 <- read.csv("../data/P17.csv")
+p18 <- read.csv("../data/P18.csv")
+
 # merge data from all participant in one df
-our_res <- rbind(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
+all_res <- rbind(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
+rm(p1, p2, p3, p4, p5, p6, p7, p8, p10, p11, p12, p13, p14, p16, p17, p18)
+```
+
+```{r}
+# check the validation stimuli and delete those participants whose average error exceedes 0.2
+validation_stimuli <- all_res %>% filter(isValidation == 1) %>% group_by(Participant) %>% summarise(mean = mean(Error..unsigned.))
+validation_stimuli_passed <- filter(validation_stimuli, mean < 0.2)
 # to filter from the validation stimuli
-our_res <- filter(our_res, isValidation == 0)
+filtered_res <- all_res %>% filter(isValidation == 0) %>% inner_join(validation_stimuli_passed, by="Participant")
+```
+
+```{r}
 # Write all data to a .csv file:
-write.csv(our_res, file = "./data/trend-bias-16-results.csv")
+write.csv(filtered_res, file = "../data/trend-bias-results.csv")
+rm(validation_stimuli, validation_stimuli_passed, all_res, filtered_res)
 ```
 
 Open a file with all our results:
 ```{r}
-all_results <- read.csv("../data/trend-bias-16-results.csv")
+our_results <- read.csv("../data/trend-bias-results.csv")
 ```
 
 1.2. if the **original data** (from the paper)
 ```{r}
-orig_all_results <- read.csv("../data/original/trend-bias-adjusted.csv")
+orig_results <- read.csv("../data/trend-bias-adjusted.csv")
 ```
 
 
 Taking the **quartiles**:
 ```{r}
-quartiled_results <- subset(all_results, all_results$Error..unsigned. >= quantile(all_results$Error..unsigned., 0.25 ) & all_results$Error..unsigned. <= quantile(all_results$Error..unsigned. , 0.75 ))
+quartiled_results <- subset(our_results, our_results$Error..unsigned. >= quantile(our_results$Error..unsigned., 0.25 ) & our_results$Error..unsigned. <= quantile(our_results$Error..unsigned. , 0.75 ))
+```
+
+```{r}
+orig_quartiled_results <- subset(orig_results, orig_results$Error..unsigned. >= quantile(orig_results$Error..unsigned., 0.25 ) & orig_results$Error..unsigned. <= quantile(orig_results$Error..unsigned. , 0.75 ))
 ```
 
 > colnames(p1)
@@ -90,122 +112,98 @@ quartiled_results <- subset(all_results, all_results$Error..unsigned. >= quantil
 
 Enter robust linear regression with all the variables for a first impression:
 ```{r}
-ols <- lm(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=all_results)
-aov <- aov(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=all_results)
+ols <- lm(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=our_results)
+aov <- aov(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=our_results)
 summary(ols)
-robust <- coeftest(ols, vcov=vcovHC(ols))
-robust
+# robust <- coeftest(ols, vcov=vcovHC(ols))
+# robust
 ```
 
 
 ## 2. Visualize the data
-smean.cl.normal(...) in Hmisc (wrapped in tidyverse), which uses quantiles of the t-distribution to calculate confidence limits.
 
-Build three plots together (bandwidth of residuals,graph type and trend type):
+Create a **function** to plot three graphs (bandwidth of residuals, graph type and trend type) together:
 ```{r}
 # 2.1. Bandwidth of Residuals (Sigma)
-residuals_plot <- 
-  all_results %>% 
-   ggplot(aes(x = Sigma, y = Error..unsigned.)) +
-       geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
-       stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
-       ylab("Mean(error)") +
-       xlab("Bandwidth of Residuals") +
-       expand_limits(y = 0) + coord_flip()
-residuals_plot
+plot_graphs <- function(x, title) {
+      residuals_plot <- 
+        x %>% 
+         ggplot(aes(x = Sigma, y = Error..unsigned.)) +
+             geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
+             stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
+             ylab("Mean(error)") +
+             xlab("Bandwidth of Residuals") +
+             expand_limits(y = 0) + coord_flip()
+      # residuals_plot
+      
+      # 2.2. Graph type (Graph.Type)
+      graph_plot <- 
+        x %>% 
+          ggplot(aes(x = Graph.Type, y = Error..unsigned.)) +
+              geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
+              stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
+              ylab("Mean(error)") +
+              xlab("Chart type") +
+              expand_limits(y = 0) + coord_flip()
+      # graph_plot
+      
+      # 2.3. Trend type (Type)
+      trend_plot <- 
+        x %>% 
+          ggplot(aes(x = Type, y = Error..unsigned.)) +
+              geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
+              stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
+              ylab("Mean(error)") +
+              xlab("Trend type") +
+              expand_limits(y = 0) + coord_flip()
+      # trend_plot
+      
+      grid.arrange(residuals_plot, graph_plot, trend_plot, nrow = 1, top=textGrob(title, gp=gpar(fontsize=15, font=8)))
+}
+```
 
-# 2.2. Graph type (Graph.Type)
-graph_plot <- 
-  all_results %>% 
-    ggplot(aes(x = Graph.Type, y = Error..unsigned.)) +
-        geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
-        stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
-        ylab("Mean(error)") +
-        xlab("Chart type") +
-        expand_limits(y = 0) + coord_flip()
-graph_plot
+Visualize the original data:
+```{r}
+plot_graphs(orig_results, "Visualization of the original data")
+```
 
-# 2.3. Trend type (Type)
-trend_plot <- 
-  all_results %>% 
-    ggplot(aes(x = Type, y = Error..unsigned.)) +
-        geom_point(stat = "summary", fun.y = "mean", size = 2, color = "red") +
-        stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0) + 
-        ylab("Mean(error)") +
-        xlab("Trend type") +
-        expand_limits(y = 0) + coord_flip()
-trend_plot
-
-grid.arrange(residuals_plot, graph_plot, trend_plot, nrow = 1)
+Visualize our data:
+```{r}
+plot_graphs(our_results, "Visualization of our data")
 ```
 
 
 ## 3. Analysis
-3.1. Carry out **three way ANCOVA** (lmer and for "mixed effect" (appears because of the difference between participants) is used)
+3.1. Carry out **three way ANCOVA** (lmer and for "mixed effect" (appears because of the difference between participants) is used):
+- the original data
 ```{r}
-ols1 <- lmer(Error..unsigned. ~ Sigma*Graph.Type*Type + M + (1|Participant), data=all_results)
-ancova <- anova(ols1)
-print(ancova)  # Interaction is not significant
+ols_orig <- lmer(Error..unsigned. ~ Sigma*Graph.Type*Type + M + (1|Participant), data=orig_quartiled_results)
+ancova_orig <- anova(ols_orig)
+print(ancova_orig)  # Interaction is not significant
 ```
 
-
-*** 3.2.-3.4. include the analysis for each of the independent variables separately,
-but now I do not think that we need them. Three way ANCOVA in 3.1. should be enough.
-3.2. Residual bandwidth
-Regression model with "Error..unsigned." as the response variable, "Sigma" as the predictor variable, and "Participant" and "M" (=slope) as the categorical variables.
-With interactions between categorical variables and predictor variable are taken into account:
+- our results
 ```{r}
-model_residual_bandwidth <- aov(Error..unsigned.~Sigma*Participant*M, data=all_results)
-print(summary(model_residual_bandwidth))
-
-# Without interactions between categorical variables and predictor variable are taken into account:
-model_residual_bandwidth2 <- aov(Error..unsigned.~Sigma+Participant+M, data=all_results)
-print(summary(model_residual_bandwidth2))  # Interaction is not significant
-
-# Compare the two models:
-print(anova(model_residual_bandwidth, model_residual_bandwidth2))
-```
-
-3.3. Graph type
-Regression model with "Error" as the response variable, "Graph.Type" as the predictor variable, and "Participant" and "M" (=slope) as the categorical variables.
-With interactions between categorical variables and predictor variable are taken into account:
-```{r}
-model_graph_type <- aov(Error~Graph.Type*Participant*M, data=q_results)
-print(summary(model_graph_type))
-# Without interactions between categorical variables and predictor variable are taken into account:
-model_graph_type2 <- aov(Error~Graph.Type+Participant+M, data=q_results)
-print(summary(model_graph_type2))
-
-# Compare the two models.
-print(anova(model_graph_type, model_graph_type2)) # Interaction is not significant
-# plot(model_graph_type2)
-```
-
-3.4. Trend type
-Regression model with "Error..unsigned." as the response variable, "Type" as the predictor variable, and "Participant" and "M" (=slope) as the categorical variables.
-With interactions between categorical variables and predictor variable are taken into account:
-```{r}
-model_trend_type <- aov(Error..unsigned.~Type*Participant*M, data=q_results)
-print(summary(model_trend_type))
-# Without interactions between categorical variables and predictor variable are taken into account:
-model_trend_type2 <- aov(Error..unsigned.~Type+Participant+M, data=q_results)
-print(summary(model_trend_type2))
-
-# Compare the two models.
-print(anova(model_trend_type, model_trend_type2))  # Interaction is not significant
-
-# plot(Error..unsigned.~Participant, all_results)
+ols_our <- lmer(Error..unsigned. ~ Sigma*Graph.Type*Type + M + (1|Participant), data=quartiled_results)
+ancova_our <- anova(ols_our)
+print(ancova_our)  # Interaction is not significant
 ```
 
 
 # 4. Futher analysis
 4.1. Average signed error
+- the original data
 ```{r}
-mean(all_results$Error, na.rm = TRUE)
+mean(orig_results$Error, na.rm = TRUE)
+# one-sample t-test. H0: mean of signed error is null:
+t.test(orig_results$Error, na.rm = TRUE)
 ```
-One-sample t-test. H0: mean of signed error is null:
+
+- our data
 ```{r}
-t.test(all_results$Error, na.rm = TRUE)
+mean(our_results$Error, na.rm = TRUE)
+# one-sample t-test. H0: mean of signed error is null:
+t.test(our_results$Error, na.rm = TRUE)
 ```
 This means that on our data the H1 is true...
 
@@ -216,11 +214,11 @@ plot(TukeyHSD(aov, "Type"))  # no difference in accuracy
 ```
 
 4.3. The interquartile mean of the absolute log error across all conditions in this experiment:
+- the original data **(SOMETHING IS WRONG HERE THE RESULT IS VERY DIFFERENT!!!)**
 ```{r}
-mean(log(quartiled_results$Error..unsigned.), na.rm = TRUE)
+mean(log(orig_quartiled_results$Error..unsigned.))
 ```
-
-4.4. **dropterm()**
+- our data
 ```{r}
-dropterm(ols1, test='Chisq')
+mean(log(quartiled_results$Error..unsigned.))
 ```
