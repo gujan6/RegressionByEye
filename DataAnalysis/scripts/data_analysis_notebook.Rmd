@@ -29,7 +29,6 @@ Inference plan:
 
 ```{r}
 library(tidyverse)
-library(ggplot2)
 library(grid)
 library(gridExtra)
 library(TukeyC)
@@ -37,6 +36,7 @@ library(car)
 library(modelr)
 library(lmtest)
 library(MASS)
+library(plm)
 import::from(lmerTest, lmer)
 import::from(multcomp, glht, mcp, contrMat)
 import::from(broom, tidy)
@@ -57,13 +57,13 @@ p5 <- read.csv("../data/P5.csv")
 p6 <- read.csv("../data/P6.csv")
 p7 <- read.csv("../data/P7.csv")
 p8 <- read.csv("../data/P8.csv")
-# p9 <- read.csv("../data/P9.csv")
+# p9 <- read.csv("../data/P9.csv") # placeholder participant ID without data
 p10 <- read.csv("../data/P10.csv")
 p11 <- read.csv("../data/P11.csv")
 p12 <- read.csv("../data/P12.csv")
 p13 <- read.csv("../data/P13.csv")
 p14 <- read.csv("../data/P14.csv")
-# p15 <- read.csv("../data/P15.csv")
+# p15 <- read.csv("../data/P15.csv") # placeholder participant ID without data
 p16 <- read.csv("../data/P16.csv")
 p17 <- read.csv("../data/P17.csv")
 p18 <- read.csv("../data/P18.csv")
@@ -81,23 +81,22 @@ filtered_res <- all_res %>% filter(isValidation == 0) %>% inner_join(validation_
 ```
 
 ```{r}
-# Write data to a .csv file:
-write.csv(filtered_res, file = "../data/trend-bias-results.csv")
+# write data to a CSV file
+write.csv(filtered_res, file = "../data/results.csv")
 rm(validation_stimuli, validation_stimuli_passed, all_res, filtered_res)
 ```
 
-Open a file with complete results:
+1.2. Load combined results
 ```{r}
-our_results <- read.csv("../data/trend-bias-results.csv")
+our_results <- read.csv("../data/results.csv")
 ```
 
-1.2. **Original data** (from the paper)
+**Original data** (from the paper)
 ```{r}
-orig_results <- read.csv("../data/trend-bias-adjusted.csv")
+orig_results <- read.csv("../data/results_orig.csv")
 ```
 
-
-Taking the **quartiles**:
+**Interquartiles mean**: discard first and forth quartile
 ```{r}
 quartiled_results <- subset(our_results, our_results$Error..unsigned. >= quantile(our_results$Error..unsigned., 0.25 ) & our_results$Error..unsigned. <= quantile(our_results$Error..unsigned. , 0.75 ))
 ```
@@ -106,11 +105,7 @@ quartiled_results <- subset(our_results, our_results$Error..unsigned. >= quantil
 orig_quartiled_results <- subset(orig_results, orig_results$Error..unsigned. >= quantile(orig_results$Error..unsigned., 0.25 ) & orig_results$Error..unsigned. <= quantile(orig_results$Error..unsigned. , 0.75 ))
 ```
 
-> colnames(p1)
-"Sigma", "Type", "M", "Participant", "Graph.Type", "Error",
-"Error..unsigned.", "Index", "Filepath", "isValidation"
-
-Enter robust linear regression with all the variables for a first impression:
+Perform robust linear regression with all the variables for a first impression:
 ```{r}
 ols <- lm(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=our_results)
 aov <- aov(Error..unsigned. ~ Sigma + Type + M + Graph.Type + Participant, data=our_results)
