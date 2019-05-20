@@ -49,13 +49,13 @@ p5 <- read.csv("./data/P5.csv")
 p6 <- read.csv("./data/P6.csv")
 p7 <- read.csv("./data/P7.csv")
 p8 <- read.csv("./data/P8.csv")
-p9 <- read.csv("./data/P9.csv")
+# p9 <- read.csv("./data/P9.csv") not applicable
 p10 <- read.csv("./data/P10.csv")
 p11 <- read.csv("./data/P11.csv")
 p12 <- read.csv("./data/P12.csv")
 p13 <- read.csv("./data/P13.csv")
 p14 <- read.csv("./data/P14.csv")
-p15 <- read.csv("./data/P15.csv")
+# p15 <- read.csv("./data/P15.csv") not applicable
 p16 <- read.csv("./data/P16.csv")
 p17 <- read.csv("./data/P17.csv")
 p18 <- read.csv("./data/P18.csv")
@@ -74,7 +74,7 @@ setwd("~/UZH/FS19/Quantitative Human Computer Interaction/Group Project")
 #load the created csv. file
 all_results <- read.table("data/trend-bias-16-results.csv", sep=";", header=TRUE)
 
-# additionally we load the original data (from the paper)
+# additionally we load the original data (from the paper) for comparison purposes
 orig_all_results <- read.table("data/trend-bias-adjusted.csv", sep=";", header=TRUE)
 
 # take the interquartiles mean
@@ -91,7 +91,9 @@ summary(aov)
 
 #####
 # Visualize the data
-# we apply smean.cl.normal(...) in Hmisc (wrapped in tidyverse), which uses quantiles of the t-distribution to calculate confidence limits.
+
+# The participants errors and its distributions
+plot(Error..unsigned.~Participant, all_results)
 
 #Build three plots together (bandwidth of residuals, graph type and trend type):
 # 2.1. Bandwidth of Residuals (Sigma)
@@ -180,7 +182,6 @@ print(summary(model_trend_type2))
 
 # Compare the two models
 print(anova(model_trend_type, model_trend_type2))
-plot(Error..unsigned.~Participant, all_results)
 
 # 4. Further analysis
 # 4.1. Average signed error
