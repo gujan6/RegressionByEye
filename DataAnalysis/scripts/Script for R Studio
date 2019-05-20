@@ -22,6 +22,7 @@
 
 ##########################
 #load necessary packages and extract commands
+# make sure to install them previously by entering install.packages("name")
 library(tidyverse)
 library(ggplot2)
 library(gridExtra)
@@ -30,7 +31,6 @@ library(car)
 library(modelr)
 library(lmtest)
 library(MASS)
-library(plm)
 import::from(lmerTest, lmer)
 import::from(multcomp, glht, mcp, contrMat)
 import::from(broom, tidy)
